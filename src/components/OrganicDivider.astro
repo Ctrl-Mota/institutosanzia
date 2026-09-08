@@ -1,0 +1,39 @@
+---
+// Divisão de seção com curva suave em vez de corte reto.
+// `bg` = cor da seção acima, `fill` = cor da seção abaixo.
+interface Props {
+  bg?: string;
+  fill?: string;
+  variant?: 1 | 2 | 3;
+  height?: number;
+}
+const {
+  bg = 'var(--sand)',
+  fill = 'var(--cool)',
+  variant = 1,
+  height = 80,
+} = Astro.props;
+
+const paths: Record<number, string> = {
+  1: 'M0,64 C240,8 420,96 720,64 C1020,32 1200,8 1440,44 L1440,120 L0,120 Z',
+  2: 'M0,32 C300,104 560,0 880,40 C1120,70 1300,104 1440,72 L1440,120 L0,120 Z',
+  3: 'M0,84 C180,36 380,20 640,52 C900,84 1160,108 1440,20 L1440,120 L0,120 Z',
+};
+---
+<div class="divider" style={`--dv-bg:${bg}; --dv-h:${height}px;`} aria-hidden="true">
+  <svg viewBox="0 0 1440 120" preserveAspectRatio="none" focusable="false">
+    <path d={paths[variant]} fill={fill} />
+  </svg>
+</div>
+
+<style>
+  .divider {
+    background: var(--dv-bg);
+    line-height: 0;
+  }
+  .divider svg {
+    display: block;
+    width: 100%;
+    height: var(--dv-h);
+  }
+</style>

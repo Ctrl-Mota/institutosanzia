@@ -1,0 +1,153 @@
+---
+import type { Service } from '../data/services';
+import { site, waLink } from '../data/site';
+
+interface Props {
+  service: Service;
+  categorySlug: string;
+  index: number;
+}
+const { service, categorySlug, index } = Astro.props;
+
+if (service.status !== 'aprovado') {
+  console.warn(
+    `[conteúdo:${service.status}] ${categorySlug}#${service.id} — "${service.name}" aguarda texto/aprovação do Instituto (ver CONTENT-TODO.md)`,
+  );
+}
+
+// Cada seção carrega o seu próprio schema Service, endereçável pela âncora.
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': `${site.url}/${categorySlug}#${service.id}`,
+  name: service.name,
+  serviceType: service.name,
+  description: service.answer,
+  url: `${site.url}/${categorySlug}#${service.id}`,
+  provider: { '@id': `${site.url}/#organizacao` },
+  areaServed: { '@type': 'City', name: site.address.city },
+  ...(service.forWhom
+    ? { audience: { '@type': 'Audience', audienceType: service.forWhom.join('; ') } }
+    : {}),
+};
+
+const alt = index % 2 === 1;
+---
+<section
+  id={service.id}
+  class:list={['svc', alt && 'svc--alt']}
+  aria-labelledby={`${service.id}-titulo`}
+>
+  <div class="wrap svc__grid">
+    <div class="svc__main">
+      <p class="eyebrow">{service.name}</p>
+      <h2 id={`${service.id}-titulo`}>{service.question}</h2>
+
+      <!-- Answer-first: a resposta vem na primeira frase, sem rodeio. -->
+      <p class="svc__answer">{service.answer}</p>
+
+      {service.body?.map((p) => <p class="svc__p">{p}</p>)}
+
+      <a
+        class="btn btn--wa svc__cta"
+        href={waLink(service.name, service.waMessage)}
+        target="_blank"
+        rel="noopener"
+      >
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+          <path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2Zm5.8 14.09c-.24.68-1.42 1.31-1.96 1.36-.54.05-1.05.24-3.53-.74-2.98-1.18-4.86-4.28-5.01-4.48-.15-.2-1.19-1.6-1.19-3.05 0-1.45.75-2.16 1.02-2.46.27-.3.59-.37.79-.37.2 0 .39 0 .57.01.18.01.42-.07.66.5.24.58.83 2.02.9 2.17.07.15.12.32.02.52-.1.2-.19.32-.39.5-.2.18-.31.29-.44.49-.13.2-.28.44-.08.79.2.35.66 1.19 1.44 1.9.99.91 1.79 1.2 2.06 1.33.27.13.51.11.7-.06.19-.17.83-.86 1.05-1.16.22-.3.43-.24.71-.13.28.11 1.74.87 2.04 1.02.3.15.5.23.57.35.07.12.07.7-.17 1.38Z"/>
+        </svg>
+        Conversar sobre {service.name}
+      </a>
+    </div>
+
+    <aside class="svc__aside" aria-label={`Informações sobre ${service.name}`}>
+      {
+        service.forWhom && (
+          <div class="card svc__card">
+            <h3 class="svc__cardTitle">Indicado para</h3>
+            <ul class="checks">
+              {service.forWhom.map((f) => <li>{f}</li>)}
+            </ul>
+          </div>
+        )
+      }
+      {
+        service.practical && (
+          <dl class="svc__facts">
+            {
+              service.practical.map((f) => (
+                <div class="svc__fact">
+                  <dt>{f.label}</dt>
+                  <dd>{f.value}</dd>
+                </div>
+              ))
+            }
+          </dl>
+        )
+      }
+    </aside>
+  </div>
+</section>
+
+<script type="application/ld+json" set:html={JSON.stringify(serviceSchema)} is:inline />
+
+<style>
+  .svc { padding-block: var(--section-y); background: var(--sand); }
+  .svc--alt { background: var(--sand-200); }
+
+  .svc__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+
+  .svc__main h2 { margin-top: var(--sp-3); }
+
+  /* A resposta direta tem peso visual maior que o corpo. */
+  .svc__answer {
+    margin-top: var(--sp-5);
+    font-size: var(--fs-lg);
+    line-height: 1.62;
+    color: var(--ink);
+    max-width: 38rem;
+  }
+  .svc__p {
+    margin-top: var(--sp-4);
+    color: var(--muted);
+    max-width: 38rem;
+  }
+  .svc__cta { margin-top: var(--sp-6); }
+
+  .svc__aside { display: grid; gap: var(--sp-5); }
+  .svc__card { border-radius: var(--r-lg); }
+  .svc__cardTitle {
+    font-size: 1.0625rem;
+    margin-bottom: var(--sp-4);
+    color: var(--navy);
+  }
+
+  .svc__facts {
+    display: grid;
+    gap: var(--sp-3);
+    margin: 0;
+    padding: 0 clamp(0.25rem, 2vw, 1rem);
+  }
+  .svc__fact {
+    display: grid;
+    grid-template-columns: minmax(min(6.5rem, 40%), auto) 1fr;
+    gap: var(--sp-4);
+    padding-block: var(--sp-3);
+    border-bottom: 1px dashed var(--line);
+    font-size: 0.9375rem;
+  }
+  .svc__fact:last-child { border-bottom: 0; }
+  .svc__fact dt { font-weight: 600; color: var(--navy); }
+  .svc__fact dd { margin: 0; color: var(--muted); }
+
+  @media (max-width: 62rem) {
+    .svc__grid { grid-template-columns: 1fr; }
+    .svc__answer, .svc__p { max-width: none; }
+  }
+</style>

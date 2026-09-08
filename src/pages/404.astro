@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { categories } from '../data/services';
+---
+<BaseLayout
+  title="Página não encontrada | Instituto Sanzia"
+  description="A página que você procurava não existe ou mudou de endereço."
+  path="/404"
+  waOrigin="os atendimentos do Instituto"
+>
+  <section class="nf section">
+    <div class="wrap measure">
+      <p class="eyebrow">Erro 404</p>
+      <h1>Esta página não existe mais.</h1>
+      <p class="lede">
+        Pode ter mudado de endereço. Escolha por onde continuar:
+      </p>
+      <ul class="nf__list">
+        <li><a href="/">Início</a></li>
+        {categories.map((c) => <li><a href={`/${c.slug}`}>{c.title}</a></li>)}
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .nf { background: var(--sand); }
+  .nf h1 { margin-top: var(--sp-3); }
+  .nf .lede { margin-top: var(--sp-4); }
+  .nf__list {
+    list-style: none;
+    margin: var(--sp-6) 0 0;
+    padding: 0;
+    display: grid;
+    gap: var(--sp-3);
+  }
+  .nf__list a { font-weight: 500; }
+</style>

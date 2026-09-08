@@ -1,0 +1,89 @@
+---
+// Botão visível de aumentar fonte. Requisito de acessibilidade assumido como
+// identidade da marca — não fica escondido em um menu.
+---
+<div class="fsc no-print">
+  <span class="fsc__label" id="fsc-label">Tamanho do texto</span>
+  <div class="fsc__group" role="group" aria-labelledby="fsc-label">
+    <button type="button" data-fs="0" aria-pressed="true"><span aria-hidden="true">A</span><span class="sr-only">Tamanho padrão</span></button>
+    <button type="button" data-fs="1" aria-pressed="false"><span aria-hidden="true">A</span><span class="sr-only">Texto maior</span></button>
+    <button type="button" data-fs="2" aria-pressed="false"><span aria-hidden="true">A</span><span class="sr-only">Texto muito maior</span></button>
+  </div>
+</div>
+
+<style>
+  .fsc { display: flex; align-items: center; gap: var(--sp-3); }
+  .fsc__label {
+    font-size: 0.8125rem;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .fsc__group {
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    padding: 3px;
+  }
+  .fsc__group button {
+    min-width: 2.25rem;
+    min-height: 2.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    background: transparent;
+    border-radius: var(--r-pill);
+    color: var(--muted);
+    cursor: pointer;
+    font-family: var(--font-serif);
+    line-height: 1;
+    transition: background-color 140ms ease, color 140ms ease;
+  }
+  .fsc__group button[data-fs='0'] { font-size: 0.875rem; }
+  .fsc__group button[data-fs='1'] { font-size: 1.0625rem; }
+  .fsc__group button[data-fs='2'] { font-size: 1.25rem; }
+  .fsc__group button:hover { background: var(--teal-100); color: var(--navy); }
+  .fsc__group button[aria-pressed='true'] {
+    background: var(--teal-700);
+    color: #fff;
+  }
+  @media (max-width: 60rem) {
+    .fsc__label { display: none; }
+  }
+</style>
+
+<script>
+  const KEY = 'sanzia:fontscale';
+  const root = document.documentElement;
+  const buttons = Array.from(
+    document.querySelectorAll<HTMLButtonElement>('.fsc__group button'),
+  );
+
+  function apply(scale: string) {
+    if (scale === '0') delete root.dataset.fontscale;
+    else root.dataset.fontscale = scale;
+    for (const b of buttons) {
+      b.setAttribute('aria-pressed', String(b.dataset.fs === scale));
+    }
+    try {
+      localStorage.setItem(KEY, scale);
+    } catch {
+      /* modo privado — a preferência vale só para esta visita */
+    }
+  }
+
+  let current = '0';
+  try {
+    current = localStorage.getItem(KEY) ?? '0';
+  } catch {
+    /* noop */
+  }
+  apply(current);
+
+  for (const b of buttons) {
+    b.addEventListener('click', () => apply(b.dataset.fs ?? '0'));
+  }
+</script>

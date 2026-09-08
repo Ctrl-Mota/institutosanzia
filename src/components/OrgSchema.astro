@@ -1,0 +1,51 @@
+---
+import { site } from '../data/site';
+import { categories } from '../data/services';
+
+// Organização + LocalBusiness, referenciada por @id em todos os Service.
+const org = {
+  '@context': 'https://schema.org',
+  '@type': ['MedicalClinic', 'EducationalOrganization'],
+  '@id': `${site.url}/#organizacao`,
+  name: site.name,
+  legalName: site.legalName,
+  description: site.description,
+  url: site.url,
+  telephone: site.phone.e164,
+  ...(site.email ? { email: site.email } : {}),
+  ...(site.social.instagram
+    ? { sameAs: [`https://instagram.com/${site.social.instagram.replace('@', '')}`] }
+    : {}),
+  address: {
+    '@type': 'PostalAddress',
+    ...(site.address.street ? { streetAddress: site.address.street } : {}),
+    addressLocality: site.address.city,
+    addressRegion: site.address.state,
+    ...(site.address.postalCode ? { postalCode: site.address.postalCode } : {}),
+    addressCountry: site.address.country,
+  },
+  ...(site.openingHours.length ? { openingHours: [...site.openingHours] } : {}),
+  availableLanguage: [
+    { '@type': 'Language', name: 'Português' },
+    { '@type': 'Language', name: 'Libras' },
+  ],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Serviços do Instituto Sanzia',
+    itemListElement: categories.map((c) => ({
+      '@type': 'OfferCatalog',
+      name: c.title,
+      url: `${site.url}/${c.slug}`,
+      itemListElement: c.services.map((s) => ({
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          '@id': `${site.url}/${c.slug}#${s.id}`,
+          name: s.name,
+        },
+      })),
+    })),
+  },
+};
+---
+<script type="application/ld+json" is:inline set:html={JSON.stringify(org)} />

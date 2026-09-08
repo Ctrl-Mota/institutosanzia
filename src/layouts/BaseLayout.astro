@@ -1,0 +1,30 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppFloat from '../components/WhatsAppFloat.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  waOrigin: string;
+}
+const { title, description, path, waOrigin } = Astro.props;
+---
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <BaseHead title={title} description={description} path={path} />
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#conteudo">Ir direto para o conteúdo</a>
+    <Header />
+    <main id="conteudo">
+      <slot />
+    </main>
+    <Footer />
+    <WhatsAppFloat origin={waOrigin} />
+  </body>
+</html>

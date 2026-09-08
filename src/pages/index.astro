@@ -1,0 +1,393 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import OrgSchema from '../components/OrgSchema.astro';
+import OrganicDivider from '../components/OrganicDivider.astro';
+import Photo from '../components/Photo.astro';
+import Faq from '../components/Faq.astro';
+import ContactBlock from '../components/ContactBlock.astro';
+import { categories } from '../data/services';
+import { site, waLink } from '../data/site';
+
+const pilares = categories.filter((c) => c.slug !== 'cursos-e-eventos');
+const cursos = categories.find((c) => c.slug === 'cursos-e-eventos')!;
+const libras = cursos.services[0]!;
+
+const homeFaq = [
+  {
+    q: 'Não tenho diagnóstico nenhum. Posso procurar o Instituto?',
+    a: 'Sim — é assim que a maioria das famílias chega. Você traz a preocupação, a gente avalia e explica o que está acontecendo. O diagnóstico, quando existe, é resultado desse processo, não requisito para começar.',
+  },
+  {
+    q: 'Como sei qual profissional meu filho precisa?',
+    a: 'Você não precisa saber. Essa é a nossa parte. Na primeira conversa entendemos a queixa e indicamos por onde começar — às vezes é uma avaliação, às vezes é uma orientação de poucos encontros.',
+  },
+  {
+    q: 'Vocês atendem adultos ou só crianças?',
+    a: 'Atendemos as duas coisas. Psicoterapia, avaliação neuropsicológica, arteterapia, orientação profissional e aulas de idiomas atendem adultos.',
+  },
+  {
+    q: 'A primeira conversa tem custo?',
+    a: 'Fale com a gente pelo WhatsApp: explicamos como funciona o primeiro contato e os valores antes de você marcar qualquer coisa.',
+  },
+  {
+    q: 'Onde o Instituto fica?',
+    a: `Estamos em ${site.address.city} — ${site.address.state}. Pelo WhatsApp enviamos o endereço completo e a melhor forma de chegar.`,
+  },
+];
+---
+<BaseLayout
+  title={`${site.name} — psicologia, terapias e apoio educacional`}
+  description={site.description}
+  path="/"
+  waOrigin="os atendimentos do Instituto"
+>
+  <OrgSchema slot="head" />
+
+  <!-- ───────────────────────────── Hero ───────────────────────────── -->
+  <section class="hero" aria-labelledby="home-titulo">
+    <div class="wrap hero__grid">
+      <div class="hero__text">
+        <p class="eyebrow">Instituto multidisciplinar em {site.address.city}</p>
+        <h1 id="home-titulo">
+          Um lugar para entender o que está acontecendo — e o que fazer a partir daí.
+        </h1>
+        <p class="lede hero__lede">
+          Psicologia, terapias de desenvolvimento e apoio educacional reunidos em
+          uma equipe que conversa entre si. Você chega com a preocupação; a gente
+          ajuda a organizar o caminho.
+        </p>
+        <div class="hero__actions">
+          <a class="btn btn--wa" href={waLink('os atendimentos do Instituto')} target="_blank" rel="noopener">
+            Tirar uma dúvida no WhatsApp
+          </a>
+          <a class="btn btn--ghost" href="#servicos">Ver os serviços</a>
+        </div>
+        <p class="hero__note">
+          Sem compromisso de agendar. Se o caminho não for aqui, a gente diz e
+          orienta para onde ir.
+        </p>
+      </div>
+
+      <div class="hero__media">
+        <Photo
+          src="espaco-recepcao.jpg"
+          alt="Recepção do Instituto Sanzia, com poltronas e iluminação suave"
+          ratio="4 / 5"
+          loading="eager"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────── Os três pilares ─────────────────────── -->
+  <section id="servicos" class="pilares section" aria-labelledby="pilares-titulo">
+    <div class="wrap">
+      <div class="pilares__head measure">
+        <p class="eyebrow">O que oferecemos</p>
+        <h2 id="pilares-titulo">Três frentes de cuidado e uma formação aberta</h2>
+        <p class="lede">
+          Cada frente reúne os serviços que se apoiam entre si. Clique para ler
+          sobre um serviço específico.
+        </p>
+      </div>
+
+      <div class="grid grid--3 pilares__grid">
+        {
+          pilares.map((c) => (
+            <article class="card pilar">
+              <h3><a href={`/${c.slug}`}>{c.title}</a></h3>
+              <p class="pilar__promise">{c.promise}</p>
+              <ul class="pilar__list">
+                {
+                  c.services.map((s) => (
+                    <li>
+                      <a href={`/${c.slug}#${s.id}`}>{s.name}</a>
+                    </li>
+                  ))
+                }
+              </ul>
+              <a class="pilar__more" href={`/${c.slug}`}>
+                Conhecer {c.navLabel.toLowerCase()}<span
+                  class="pilar__arrow"
+                  aria-hidden="true">&nbsp;→</span>
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <OrganicDivider bg="var(--cool)" fill="var(--navy)" variant={1} height={104} />
+
+  <!-- ───────────────────────── Curso de Libras ───────────────────────── -->
+  <section class="libras" aria-labelledby="libras-titulo">
+    <div class="wrap libras__grid">
+      <div class="libras__text">
+        <p class="eyebrow libras__eyebrow">Cursos e eventos</p>
+        <h2 id="libras-titulo">{libras.name}</h2>
+        <p class="libras__answer">{libras.answer}</p>
+        <div class="libras__actions">
+          <a class="btn libras__solid" href={`/${cursos.slug}#${libras.id}`}>
+            Ver o curso
+          </a>
+          <a class="btn btn--ghost libras__ghost" href={waLink(libras.name, libras.waMessage)} target="_blank" rel="noopener">
+            Entrar na lista da próxima turma
+          </a>
+        </div>
+      </div>
+      <div class="libras__media">
+        <Photo
+          src="curso-libras.jpg"
+          alt="Turma do Curso Básico de Libras durante uma aula prática"
+          ratio="3 / 2"
+        />
+      </div>
+    </div>
+  </section>
+
+  <OrganicDivider bg="var(--navy)" fill="var(--sand)" variant={2} height={104} />
+
+  <!-- ─────────────────────── Como começa ─────────────────────── -->
+  <section class="passos section" aria-labelledby="passos-titulo">
+    <div class="wrap">
+      <div class="passos__head measure">
+        <p class="eyebrow">Sem mistério</p>
+        <h2 id="passos-titulo">Como funciona o primeiro contato</h2>
+        <p class="lede">
+          Procurar ajuda para um filho já é difícil o bastante. O processo aqui é
+          simples e você sabe o que esperar em cada etapa.
+        </p>
+      </div>
+
+      <ol class="passos__list">
+        <li class="passo">
+          <span class="passo__num" aria-hidden="true">1</span>
+          <h3>Você conta o que está acontecendo</h3>
+          <p>
+            Pelo WhatsApp, no seu tempo e com as palavras que tiver. Não precisa
+            usar termo técnico nem ter clareza do problema.
+          </p>
+        </li>
+        <li class="passo">
+          <span class="passo__num" aria-hidden="true">2</span>
+          <h3>A gente indica por onde começar</h3>
+          <p>
+            Explicamos qual profissional faz sentido, quanto tempo leva e quanto
+            custa — antes de você marcar qualquer coisa.
+          </p>
+        </li>
+        <li class="passo">
+          <span class="passo__num" aria-hidden="true">3</span>
+          <h3>O plano é montado com você</h3>
+          <p>
+            Metas escritas, revisadas periodicamente, com devolutivas em
+            linguagem clara. Você acompanha a evolução, não só o boleto.
+          </p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ─────────────────────── Diferenciais ─────────────────────── -->
+  <section class="valores" aria-labelledby="valores-titulo">
+    <div class="wrap valores__grid">
+      <div class="valores__text">
+        <p class="eyebrow">Por que o Instituto</p>
+        <h2 id="valores-titulo">Cuidado técnico, sem pressa e sem pressão</h2>
+        <ul class="checks valores__list">
+          <li>
+            <strong>Equipe multidisciplinar no mesmo lugar.</strong> Psicologia,
+            terapia ocupacional, psicopedagogia e ABA conversando entre si — sem
+            você repetir a mesma história em cinco lugares diferentes.
+          </li>
+          <li>
+            <strong>Plano com metas escritas.</strong> Você sabe o que está sendo
+            trabalhado, por quê, e como está evoluindo.
+          </li>
+          <li>
+            <strong>Articulação com a escola.</strong> Com a sua autorização,
+            falamos com quem convive com a criança todos os dias.
+          </li>
+          <li>
+            <strong>Acessibilidade como princípio.</strong> Ensinamos Libras e
+            atendemos pessoas com deficiência — dentro e fora do site.
+          </li>
+        </ul>
+      </div>
+
+      <div class="valores__media">
+        <Photo src="espaco-sala-1.jpg" alt="Sala de atendimento infantil com materiais organizados" ratio="4 / 3" />
+        <Photo src="espaco-sala-2.jpg" alt="Sala de psicoterapia com poltronas e luz natural" ratio="4 / 3" />
+      </div>
+    </div>
+  </section>
+
+  <Faq items={homeFaq} title="Perguntas frequentes" />
+
+  <OrganicDivider bg="var(--cool)" fill="var(--navy)" variant={3} height={104} />
+
+  <ContactBlock
+    origin="os atendimentos do Instituto"
+    title="Conte o que está acontecendo."
+    text="A gente escuta, explica o que é possível fazer e indica o próximo passo — mesmo que o próximo passo não seja aqui."
+  />
+</BaseLayout>
+
+<style>
+  /* ---------------- Hero ---------------- */
+  .hero {
+    background: var(--sand);
+    padding-block: clamp(2.5rem, 6vw, 5rem) clamp(2rem, 5vw, 4rem);
+  }
+  .hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: center;
+  }
+  .hero h1 { margin-top: var(--sp-4); max-width: 30ch; }
+  .hero__lede { margin-top: var(--sp-5); }
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-4);
+    margin-top: var(--sp-6);
+  }
+  .hero__note {
+    margin-top: var(--sp-5);
+    font-size: 0.9375rem;
+    color: var(--muted);
+    max-width: 34rem;
+  }
+  .hero__media { position: relative; }
+  .hero__media::before {
+    /* forma orgânica de fundo, puramente decorativa */
+    content: '';
+    position: absolute;
+    inset: -8% -6% -8% 12%;
+    background: var(--teal-100);
+    border-radius: 48% 52% 44% 56% / 56% 44% 56% 44%;
+    z-index: 0;
+  }
+  .hero__media :global(.photo) { position: relative; z-index: 1; box-shadow: var(--sh-2); }
+
+  /* ---------------- Pilares ---------------- */
+  .pilares { background: var(--cool); }
+  .pilares__grid { margin-top: var(--sp-7); }
+
+  .pilar { display: flex; flex-direction: column; }
+  .pilar h3 { font-size: var(--fs-h3); }
+  .pilar h3 a { color: var(--navy); text-decoration: none; }
+  .pilar h3 a:hover { color: var(--teal-700); text-decoration: underline; }
+  .pilar__promise {
+    margin-top: var(--sp-3);
+    color: var(--muted);
+    font-size: 0.9375rem;
+  }
+  .pilar__list {
+    list-style: none;
+    margin: var(--sp-5) 0 0;
+    padding: 0;
+    display: grid;
+    gap: var(--sp-1);
+    border-top: 1px solid var(--line);
+    padding-top: var(--sp-4);
+  }
+  .pilar__list a {
+    display: block;
+    padding: 0.35rem 0;
+    text-decoration: none;
+    color: var(--navy);
+    font-size: 0.9375rem;
+  }
+  .pilar__list a:hover { color: var(--teal-700); text-decoration: underline; }
+  .pilar__more {
+    margin-top: auto;
+    padding-top: var(--sp-5);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    text-decoration: none;
+  }
+  /* `white-space: nowrap` no espaço + seta mantém os dois na última palavra. */
+  .pilar__arrow { white-space: nowrap; }
+  .pilar__more:hover { text-decoration: underline; }
+
+  /* ---------------- Libras ---------------- */
+  .libras {
+    background: var(--navy);
+    color: #fff;
+    padding-block: clamp(3rem, 6vw, 5rem);
+  }
+  .libras__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .libras h2 { color: #fff; margin-top: var(--sp-3); }
+  .libras__eyebrow { color: #93bcc6; }
+  .libras__answer {
+    margin-top: var(--sp-5);
+    color: #d3dee7;
+    font-size: var(--fs-lg);
+    line-height: 1.6;
+  }
+  .libras__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-4);
+    margin-top: var(--sp-6);
+  }
+  .libras__solid { background: #fff; color: var(--navy); }
+  .libras__solid:hover { background: var(--teal-100); color: var(--navy-900); }
+  .libras__ghost { color: #fff; border-color: rgba(255, 255, 255, 0.4); }
+  .libras__ghost:hover { background: rgba(255, 255, 255, 0.1); color: #fff; border-color: #fff; }
+
+  /* ---------------- Passos ---------------- */
+  .passos { background: var(--sand); }
+  .passos__list {
+    list-style: none;
+    margin: var(--sp-7) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: clamp(1.25rem, 3vw, 2.5rem);
+  }
+  .passo h3 { font-size: var(--fs-h4); margin-top: var(--sp-4); }
+  .passo p { margin-top: var(--sp-3); color: var(--muted); font-size: 0.9688rem; }
+  .passo__num {
+    display: grid;
+    place-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--r-pill);
+    background: var(--teal-100);
+    color: var(--navy);
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  /* ---------------- Valores ---------------- */
+  .valores { background: var(--sand-200); padding-block: var(--section-y); }
+  .valores__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .valores h2 { margin-top: var(--sp-3); }
+  .valores__list { margin-top: var(--sp-6); gap: var(--sp-4); }
+  .valores__list strong { color: var(--navy); font-weight: 600; }
+  .valores__media { display: grid; gap: var(--sp-4); }
+
+  /* ---------------- Responsivo ---------------- */
+  @media (max-width: 62rem) {
+    .hero__grid,
+    .libras__grid,
+    .valores__grid { grid-template-columns: 1fr; }
+    .hero__media { order: -1; max-width: 26rem; }
+    .valores__media { grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); }
+  }
+</style>

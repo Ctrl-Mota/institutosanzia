@@ -1,0 +1,260 @@
+---
+import { categories } from '../data/services';
+import { site, waLink } from '../data/site';
+import FontSizeControl from './FontSizeControl.astro';
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+
+<div class="util no-print">
+  <div class="wrap util__inner">
+    <p class="util__claim">
+      Atendimento acessível · ensinamos Libras
+    </p>
+    <div class="util__right">
+      <a class="util__phone" href={`tel:${site.phone.e164}`}>{site.phone.display}</a>
+      <FontSizeControl />
+    </div>
+  </div>
+</div>
+
+<header class="hdr no-print">
+  <div class="wrap hdr__inner">
+    <a class="brand" href="/">
+      <span class="brand__mark" aria-hidden="true">
+        <svg viewBox="0 0 40 40" width="40" height="40" focusable="false">
+          <path d="M20 3c9.4 0 17 7.6 17 17s-7.6 17-17 17S3 29.4 3 20c0-6 4-8.5 8.5-9.8C16 9 14.5 3 20 3Z" fill="var(--teal)" opacity=".18"/>
+          <path d="M27.5 13.5c-3.6-2.6-8.2-1.4-9.6 1.9-1.5 3.5 2.6 5 4.6 6.2 2 1.2 3 3.6.6 5.3-2.3 1.6-6 .9-8.1-1" fill="none" stroke="var(--navy)" stroke-width="2.6" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="brand__text">
+        <strong>Instituto Sanzia</strong>
+        <small>Cuidado, desenvolvimento e aprendizagem</small>
+      </span>
+    </a>
+
+    <button
+      type="button"
+      class="hdr__toggle"
+      aria-expanded="false"
+      aria-controls="nav-principal"
+    >
+      <span class="hdr__bars" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="sr-only">Abrir menu de navegação</span>
+    </button>
+
+    <nav id="nav-principal" class="nav" aria-label="Navegação principal">
+      <ul class="nav__list">
+        {
+          categories.map((c) => (
+            <li>
+              <a
+                href={`/${c.slug}`}
+                aria-current={path === `/${c.slug}` ? 'page' : undefined}
+              >
+                {c.navLabel}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="nav__extra">
+        <a class="btn btn--primary nav__cta" href={waLink('os atendimentos do Instituto')}>
+          Falar no WhatsApp
+        </a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<style>
+  /* Barra utilitária: os controles de acessibilidade ficam visíveis por
+     princípio, e o header sticky fica livre para marca + navegação. */
+  .util {
+    background: var(--cool);
+    border-bottom: 1px solid var(--line);
+    font-size: 0.8125rem;
+  }
+  .util__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--sp-2) var(--sp-4);
+    min-height: 2.6rem;
+    padding-block: 0.3rem;
+  }
+  .util__claim { color: var(--muted); }
+  .util__right { display: flex; align-items: center; flex-wrap: wrap; gap: var(--sp-3) var(--sp-5); }
+  .util__phone { font-weight: 600; text-decoration: none; }
+  .util__phone:hover { text-decoration: underline; }
+  @media (max-width: 40rem) {
+    .util__claim { display: none; }
+    .util__inner { justify-content: flex-end; }
+  }
+
+  .hdr {
+    position: sticky;
+    top: 0;
+    z-index: 60;
+    /* Opaco de propósito: backdrop-filter custa caro em Android de entrada e
+       quebra a composição em alguns renderizadores. */
+    background: var(--sand);
+    border-bottom: 1px solid var(--line);
+  }
+  .hdr__inner {
+    min-height: var(--header-h);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-4);
+    padding-block: var(--sp-3);
+    /* Media query não acompanha o controle de tamanho de texto (as unidades
+       de MQ ignoram o font-size do root). Sem quebra de linha, quem aumenta
+       a fonte ganharia rolagem horizontal — justamente quem menos deve ter.
+       O header então quebra em duas linhas em vez de estourar a largura. */
+    flex-wrap: wrap;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-3);
+    text-decoration: none;
+    color: var(--navy);
+    /* base 0: a marca não reivindica a largura de max-content, então o botão
+       do menu continua na mesma linha mesmo com o texto ampliado. */
+    flex: 1 1 0;
+    min-width: 0;
+  }
+  .brand__mark { flex: none; }
+  .brand__text { display: flex; flex-direction: column; line-height: 1.2; min-width: 0; }
+  .brand__text strong {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+  .brand__text small {
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.01em;
+  }
+
+  .nav { display: flex; align-items: center; flex-wrap: wrap; gap: var(--sp-4) var(--sp-5); }
+  .nav__list {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--sp-3) var(--sp-5);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .nav__list a {
+    text-decoration: none;
+    color: var(--navy);
+    font-size: 0.9rem;
+    font-weight: 500;
+    white-space: nowrap;
+    padding-block: var(--sp-2);
+    border-bottom: 2px solid transparent;
+  }
+  .nav__list a:hover { border-bottom-color: var(--teal); }
+  .nav__list a[aria-current='page'] {
+    border-bottom-color: var(--teal-700);
+    color: var(--teal-700);
+  }
+  .nav__extra { display: flex; align-items: center; gap: var(--sp-5); }
+  .nav__cta { padding: 0.6rem 1.15rem; font-size: 0.9375rem; white-space: nowrap; }
+
+  .hdr__toggle {
+    display: none;
+    flex: none;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    width: 2.9rem;
+    height: 2.9rem;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .hdr__bars { display: grid; gap: 4px; }
+  .hdr__bars i {
+    display: block;
+    width: 18px;
+    height: 2px;
+    background: var(--navy);
+    border-radius: 2px;
+  }
+
+  /* Abaixo de 84rem o subtítulo da marca quebraria em 3 linhas. */
+  @media (max-width: 84rem) {
+    .brand__text small { display: none; }
+  }
+
+  /* ---- Mobile / tablet ---- */
+  @media (max-width: 72rem) {
+    .hdr__toggle { display: inline-flex; }
+    .nav {
+      position: absolute;
+      inset: 100% 0 auto 0;
+      flex-direction: column;
+      align-items: stretch;
+      gap: var(--sp-5);
+      background: var(--sand);
+      border-bottom: 1px solid var(--line);
+      padding: var(--sp-5) clamp(1.25rem, 5vw, 2.5rem) var(--sp-6);
+      box-shadow: var(--sh-2);
+      display: none;
+    }
+    .nav[data-open='true'] { display: flex; }
+    .nav__list { flex-direction: column; align-items: stretch; gap: 0; }
+    .nav__list a {
+      display: block;
+      padding: var(--sp-4) 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 1.05rem;
+      white-space: normal;
+    }
+    .nav__list a:hover { border-bottom-color: var(--line); color: var(--teal-700); }
+    .nav__extra {
+      flex-direction: column;
+      align-items: stretch;
+      gap: var(--sp-4);
+    }
+    .nav__cta { justify-content: center; padding: 0.85rem 1.4rem; }
+    .brand__text small { display: block; }
+  }
+</style>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('.hdr__toggle');
+  const nav = document.querySelector<HTMLElement>('#nav-principal');
+
+  if (toggle && nav) {
+    const setOpen = (open: boolean) => {
+      nav.dataset.open = String(open);
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.querySelector('.sr-only')!.textContent = open
+        ? 'Fechar menu de navegação'
+        : 'Abrir menu de navegação';
+    };
+
+    toggle.addEventListener('click', () => {
+      setOpen(nav.dataset.open !== 'true');
+    });
+
+    // Esc fecha e devolve o foco ao botão — navegação por teclado.
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && nav.dataset.open === 'true') {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    nav.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a')) setOpen(false);
+    });
+  }
+</script>

@@ -1,0 +1,63 @@
+---
+import { site, waLink } from '../data/site';
+
+interface Props {
+  origin: string;
+  title?: string;
+  text?: string;
+}
+const {
+  origin,
+  title = 'Ainda com dúvida sobre por onde começar?',
+  text = 'Conte o que está acontecendo. A gente escuta e indica o caminho — mesmo que o caminho não seja aqui.',
+} = Astro.props;
+---
+<section class="contato" aria-labelledby="contato-titulo">
+  <div class="wrap contato__inner">
+    <div class="contato__text">
+      <p class="eyebrow contato__eyebrow">Fale com o Instituto</p>
+      <h2 id="contato-titulo">{title}</h2>
+      <p class="lede contato__lede">{text}</p>
+    </div>
+
+    <div class="contato__actions">
+      <a
+        class="btn btn--wa"
+        href={waLink(origin)}
+        target="_blank"
+        rel="noopener"
+      >
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+          <path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2Zm5.8 14.09c-.24.68-1.42 1.31-1.96 1.36-.54.05-1.05.24-3.53-.74-2.98-1.18-4.86-4.28-5.01-4.48-.15-.2-1.19-1.6-1.19-3.05 0-1.45.75-2.16 1.02-2.46.27-.3.59-.37.79-.37.2 0 .39 0 .57.01.18.01.42-.07.66.5.24.58.83 2.02.9 2.17.07.15.12.32.02.52-.1.2-.19.32-.39.5-.2.18-.31.29-.44.49-.13.2-.28.44-.08.79.2.35.66 1.19 1.44 1.9.99.91 1.79 1.2 2.06 1.33.27.13.51.11.7-.06.19-.17.83-.86 1.05-1.16.22-.3.43-.24.71-.13.28.11 1.74.87 2.04 1.02.3.15.5.23.57.35.07.12.07.7-.17 1.38Z"/>
+        </svg>
+        Tirar uma dúvida no WhatsApp
+      </a>
+      <p class="contato__phone">
+        ou ligue para
+        <a href={`tel:${site.phone.e164}`}>{site.phone.display}</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contato {
+    background: var(--navy);
+    color: #fff;
+    padding-block: clamp(3rem, 6vw, 5rem);
+  }
+  .contato__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+  }
+  .contato__text { max-width: 34rem; }
+  .contato h2 { color: #fff; margin-top: var(--sp-3); }
+  .contato__eyebrow { color: #93bcc6; }
+  .contato__lede { color: #ccd8e2; margin-top: var(--sp-4); font-size: 1.05rem; }
+  .contato__actions { display: grid; gap: var(--sp-4); justify-items: start; }
+  .contato__phone { font-size: 0.9375rem; color: #ccd8e2; }
+  .contato__phone a { color: #fff; }
+</style>

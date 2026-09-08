@@ -1,0 +1,94 @@
+---
+import { categories } from '../data/services';
+import { site } from '../data/site';
+const year = 2026; // build estático: sem data dinâmica no HTML
+---
+<footer class="ft">
+  <div class="wrap ft__inner">
+    <div class="ft__brand">
+      <p class="ft__name">Instituto Sanzia</p>
+      <p class="ft__tag">{site.tagline}</p>
+      <p class="ft__contact">
+        <a href={`tel:${site.phone.e164}`}>{site.phone.display}</a>
+        {site.address.city && <span class="ft__sep">·</span>}
+        {site.address.city && <span>{site.address.city} — {site.address.state}</span>}
+      </p>
+    </div>
+
+    <nav class="ft__nav" aria-label="Serviços">
+      {
+        categories.map((c) => (
+          <div class="ft__col">
+            <p class="ft__colTitle"><a href={`/${c.slug}`}>{c.navLabel}</a></p>
+            <ul>
+              {
+                c.services.map((s) => (
+                  <li><a href={`/${c.slug}#${s.id}`}>{s.name}</a></li>
+                ))
+              }
+            </ul>
+          </div>
+        ))
+      }
+    </nav>
+  </div>
+
+  <div class="wrap ft__bottom">
+    <p>© {year} {site.legalName}. Todos os direitos reservados.</p>
+    <p class="ft__a11y">
+      Site desenvolvido com acessibilidade: contraste AA, navegação por teclado e
+      controle de tamanho de texto.
+    </p>
+  </div>
+</footer>
+
+<style>
+  .ft {
+    background: var(--navy-900);
+    color: #c8d4de;
+    padding-top: clamp(2.5rem, 5vw, 4rem);
+    font-size: 0.9375rem;
+  }
+  .ft__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2.2fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    padding-bottom: var(--sp-7);
+  }
+  .ft__name {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    color: #fff;
+  }
+  .ft__tag { margin-top: var(--sp-2); color: #9fb2c1; max-width: 22rem; }
+  .ft__contact { margin-top: var(--sp-4); }
+  .ft__sep { padding-inline: var(--sp-2); color: #6d8299; }
+
+  .ft__nav {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: var(--sp-5);
+  }
+  .ft__colTitle { font-weight: 600; margin-bottom: var(--sp-3); }
+  .ft__colTitle a { color: #fff; text-decoration: none; }
+  .ft__colTitle a:hover { text-decoration: underline; }
+  .ft__nav ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-2); }
+  .ft__nav a { color: #a8bccb; text-decoration: none; }
+  .ft__nav a:hover { color: #fff; text-decoration: underline; }
+
+  .ft__bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    padding-block: var(--sp-5);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--sp-3);
+    font-size: 0.8125rem;
+    color: #8fa5b6;
+  }
+  .ft__a11y { max-width: 34rem; }
+
+  @media (max-width: 62rem) {
+    .ft__inner { grid-template-columns: 1fr; }
+  }
+</style>

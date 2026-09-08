@@ -1,0 +1,93 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+
+/**
+ * Foto do espaço real do Instituto.
+ * Enquanto o arquivo não existe em public/img/, renderiza um placeholder
+ * identificado — o layout não quebra e fica claro qual foto falta.
+ * Quando a foto chegar, basta salvar com o nome esperado.
+ */
+interface Props {
+  /** nome do arquivo em public/img/ — ex.: 'espaco-recepcao.jpg' */
+  src: string;
+  alt: string;
+  /** proporção CSS — ex.: '4 / 3' */
+  ratio?: string;
+  loading?: 'lazy' | 'eager';
+  class?: string;
+}
+const {
+  src,
+  alt,
+  ratio = '4 / 3',
+  loading = 'lazy',
+  class: className,
+} = Astro.props;
+
+const abs = path.join(process.cwd(), 'public', 'img', src);
+const exists = fs.existsSync(abs);
+
+if (!exists) {
+  console.warn(`[foto ausente] public/img/${src} — "${alt}"`);
+}
+---
+{
+  exists ? (
+    <img
+      class:list={['photo', className]}
+      src={`/img/${src}`}
+      alt={alt}
+      loading={loading}
+      decoding="async"
+      style={`aspect-ratio:${ratio}`}
+    />
+  ) : (
+    <div
+      class:list={['photo photo--todo', className]}
+      style={`aspect-ratio:${ratio}`}
+      role="img"
+      aria-label={alt}
+    >
+      <svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true" focusable="false">
+        <path d="M3 5.5h18v13H3z" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="8.5" cy="10" r="1.6" fill="currentColor"/>
+        <path d="M4 17l5-5 4 3.5 3-2.5 4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+      </svg>
+      <span class="photo__todo">Foto a receber<br /><code>{src}</code></span>
+    </div>
+  )
+}
+
+<style>
+  .photo {
+    width: 100%;
+    border-radius: var(--r-lg);
+    object-fit: cover;
+    background: var(--sand-200);
+  }
+  .photo--todo {
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: var(--sp-3);
+    padding: var(--sp-5);
+    text-align: center;
+    color: var(--muted);
+    background:
+      repeating-linear-gradient(
+        135deg,
+        var(--sand-200) 0 12px,
+        color-mix(in srgb, var(--sand-200) 82%, var(--teal)) 12px 24px
+      );
+    border: 1px dashed var(--line);
+  }
+  .photo__todo { font-size: 0.8125rem; line-height: 1.5; }
+  .photo__todo code {
+    font-size: 0.75rem;
+    color: var(--navy);
+    background: rgba(255, 255, 255, 0.6);
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+</style>
