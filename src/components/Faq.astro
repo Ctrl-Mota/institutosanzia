@@ -10,7 +10,6 @@ const { items, title = 'Perguntas frequentes' } = Astro.props;
 <section class="faq section" aria-labelledby="faq-titulo">
   <div class="wrap faq__inner">
     <div class="faq__head">
-      <p class="eyebrow">Antes de decidir</p>
       <h2 id="faq-titulo">{title}</h2>
       <p class="lede">
         Se a sua dúvida não estiver aqui, pergunte no WhatsApp — respondemos sem
@@ -52,7 +51,7 @@ const { items, title = 'Perguntas frequentes' } = Astro.props;
 />
 
 <style>
-  .faq { background: var(--cool); }
+  .faq { background: var(--grey-50); }
   .faq__inner {
     display: grid;
     grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
@@ -60,15 +59,23 @@ const { items, title = 'Perguntas frequentes' } = Astro.props;
     align-items: start;
   }
   .faq__head .lede { margin-top: var(--sp-4); font-size: 1rem; }
-  .faq__head h2 { margin-top: var(--sp-3); }
 
-  .faq__list { display: grid; gap: var(--sp-3); }
-
-  .faq__item {
-    background: #fff;
+  .faq__list {
+    display: grid;
+    background: var(--white);
     border: 1px solid var(--line);
     border-radius: var(--r-md);
-    overflow: hidden;
+  }
+
+  .faq__item { background: none; border: 0; }
+  .faq__item + .faq__item { border-top: 1px solid var(--line); }
+  /* Cantos no <summary>, nunca overflow:hidden no container: um ancestral
+     que corta comeria o anel de foco de todos os summary. */
+  .faq__item:first-child summary {
+    border-radius: calc(var(--r-md) - 1px) calc(var(--r-md) - 1px) 0 0;
+  }
+  .faq__item:last-child:not([open]) summary {
+    border-radius: 0 0 calc(var(--r-md) - 1px) calc(var(--r-md) - 1px);
   }
   .faq__item summary {
     display: flex;
@@ -83,7 +90,7 @@ const { items, title = 'Perguntas frequentes' } = Astro.props;
     min-height: 3.25rem;
   }
   .faq__item summary::-webkit-details-marker { display: none; }
-  .faq__item summary:hover { background: var(--sand); }
+  .faq__item summary:hover { background: var(--grey-25); }
   .faq__item summary svg {
     flex: none;
     color: var(--teal-700);

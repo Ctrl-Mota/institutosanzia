@@ -4,6 +4,7 @@ import OrgSchema from '../components/OrgSchema.astro';
 import OrganicDivider from '../components/OrganicDivider.astro';
 import Photo from '../components/Photo.astro';
 import Faq from '../components/Faq.astro';
+import Depoimentos from '../components/Depoimentos.astro';
 import ContactBlock from '../components/ContactBlock.astro';
 import { categories } from '../data/services';
 import { site, waLink } from '../data/site';
@@ -47,14 +48,13 @@ const homeFaq = [
   <section class="hero" aria-labelledby="home-titulo">
     <div class="wrap hero__grid">
       <div class="hero__text">
-        <p class="eyebrow">Instituto multidisciplinar em {site.address.city}</p>
         <h1 id="home-titulo">
           Um lugar para entender o que está acontecendo — e o que fazer a partir daí.
         </h1>
         <p class="lede hero__lede">
-          Psicologia, terapias de desenvolvimento e apoio educacional reunidos em
-          uma equipe que conversa entre si. Você chega com a preocupação; a gente
-          ajuda a organizar o caminho.
+          Psicologia, terapias de desenvolvimento e apoio educacional em
+          {site.address.city}, reunidos em uma equipe que conversa entre si.
+          Você chega com a preocupação; a gente ajuda a organizar o caminho.
         </p>
         <div class="hero__actions">
           <a class="btn btn--wa" href={waLink('os atendimentos do Instituto')} target="_blank" rel="noopener">
@@ -70,9 +70,9 @@ const homeFaq = [
 
       <div class="hero__media">
         <Photo
-          src="espaco-recepcao.jpg"
-          alt="Recepção do Instituto Sanzia, com poltronas e iluminação suave"
-          ratio="4 / 5"
+          src="espaco-sala-vertical.jpg"
+          alt="Sala de atendimento do Instituto: aparador de madeira com certificados, uma planta e a mesa de vidro ao lado"
+          ratio="3 / 4"
           loading="eager"
         />
       </div>
@@ -83,7 +83,6 @@ const homeFaq = [
   <section id="servicos" class="pilares section" aria-labelledby="pilares-titulo">
     <div class="wrap">
       <div class="pilares__head measure">
-        <p class="eyebrow">O que oferecemos</p>
         <h2 id="pilares-titulo">Três frentes de cuidado e uma formação aberta</h2>
         <p class="lede">
           Cada frente reúne os serviços que se apoiam entre si. Clique para ler
@@ -106,11 +105,7 @@ const homeFaq = [
                   ))
                 }
               </ul>
-              <a class="pilar__more" href={`/${c.slug}`}>
-                Conhecer {c.navLabel.toLowerCase()}<span
-                  class="pilar__arrow"
-                  aria-hidden="true">&nbsp;→</span>
-              </a>
+              <a class="pilar__more" href={`/${c.slug}`}>Conhecer {c.navLabel}</a>
             </article>
           ))
         }
@@ -118,13 +113,12 @@ const homeFaq = [
     </div>
   </section>
 
-  <OrganicDivider bg="var(--cool)" fill="var(--navy)" variant={1} height={104} />
+  <OrganicDivider bg="var(--grey-50)" fill="var(--navy)" />
 
   <!-- ───────────────────────── Curso de Libras ───────────────────────── -->
   <section class="libras" aria-labelledby="libras-titulo">
     <div class="wrap libras__grid">
       <div class="libras__text">
-        <p class="eyebrow libras__eyebrow">Cursos e eventos</p>
         <h2 id="libras-titulo">{libras.name}</h2>
         <p class="libras__answer">{libras.answer}</p>
         <div class="libras__actions">
@@ -136,23 +130,27 @@ const homeFaq = [
           </a>
         </div>
       </div>
+      <!-- Aqui havia um placeholder de foto de turma. Foto de aula de Libras
+           precisa de rosto e mão de aluno real, com autorização — e uma imagem
+           genérica pesaria contra justamente neste bloco. Enquanto a foto não
+           existe, o espaço carrega informação: para quem o curso é. -->
       <div class="libras__media">
-        <Photo
-          src="curso-libras.jpg"
-          alt="Turma do Curso Básico de Libras durante uma aula prática"
-          ratio="3 / 2"
-        />
+        <div class="libras__para">
+          <h3>Para quem é</h3>
+          <ul class="checks">
+            {libras.forWhom?.map((f) => <li>{f}</li>)}
+          </ul>
+        </div>
       </div>
     </div>
   </section>
 
-  <OrganicDivider bg="var(--navy)" fill="var(--sand)" variant={2} height={104} />
+  <OrganicDivider bg="var(--navy)" fill="var(--grey-25)" flip />
 
   <!-- ─────────────────────── Como começa ─────────────────────── -->
   <section class="passos section" aria-labelledby="passos-titulo">
     <div class="wrap">
       <div class="passos__head measure">
-        <p class="eyebrow">Sem mistério</p>
         <h2 id="passos-titulo">Como funciona o primeiro contato</h2>
         <p class="lede">
           Procurar ajuda para um filho já é difícil o bastante. O processo aqui é
@@ -193,7 +191,6 @@ const homeFaq = [
   <section class="valores" aria-labelledby="valores-titulo">
     <div class="wrap valores__grid">
       <div class="valores__text">
-        <p class="eyebrow">Por que o Instituto</p>
         <h2 id="valores-titulo">Cuidado técnico, sem pressa e sem pressão</h2>
         <ul class="checks valores__list">
           <li>
@@ -217,15 +214,25 @@ const homeFaq = [
       </div>
 
       <div class="valores__media">
-        <Photo src="espaco-sala-1.jpg" alt="Sala de atendimento infantil com materiais organizados" ratio="4 / 3" />
-        <Photo src="espaco-sala-2.jpg" alt="Sala de psicoterapia com poltronas e luz natural" ratio="4 / 3" />
+        <Photo
+          src="espaco-sala-1.jpg"
+          alt="Sala de atendimento do Instituto: mesa clara, duas cadeiras, prateleiras de madeira e uma planta"
+          ratio="4 / 3"
+        />
+        <Photo
+          src="espaco-sala-2.jpg"
+          alt="Mesa de atendimento com prateleiras de madeira, um quadro do mar e um cavalete com tela em branco"
+          ratio="4 / 3"
+        />
       </div>
     </div>
   </section>
 
+  <Depoimentos />
+
   <Faq items={homeFaq} title="Perguntas frequentes" />
 
-  <OrganicDivider bg="var(--cool)" fill="var(--navy)" variant={3} height={104} />
+  <OrganicDivider bg="var(--grey-50)" fill="var(--navy)" />
 
   <ContactBlock
     origin="os atendimentos do Instituto"
@@ -237,7 +244,7 @@ const homeFaq = [
 <style>
   /* ---------------- Hero ---------------- */
   .hero {
-    background: var(--sand);
+    background: var(--grey-25);
     padding-block: clamp(2.5rem, 6vw, 5rem) clamp(2rem, 5vw, 4rem);
   }
   .hero__grid {
@@ -246,7 +253,7 @@ const homeFaq = [
     gap: clamp(2rem, 5vw, 4.5rem);
     align-items: center;
   }
-  .hero h1 { margin-top: var(--sp-4); max-width: 30ch; }
+  .hero h1 { max-width: 30ch; }
   .hero__lede { margin-top: var(--sp-5); }
   .hero__actions {
     display: flex;
@@ -260,20 +267,10 @@ const homeFaq = [
     color: var(--muted);
     max-width: 34rem;
   }
-  .hero__media { position: relative; }
-  .hero__media::before {
-    /* forma orgânica de fundo, puramente decorativa */
-    content: '';
-    position: absolute;
-    inset: -8% -6% -8% 12%;
-    background: var(--teal-100);
-    border-radius: 48% 52% 44% 56% / 56% 44% 56% 44%;
-    z-index: 0;
-  }
-  .hero__media :global(.photo) { position: relative; z-index: 1; box-shadow: var(--sh-2); }
+  .hero__media :global(.photo) { box-shadow: var(--sh-2); }
 
   /* ---------------- Pilares ---------------- */
-  .pilares { background: var(--cool); }
+  .pilares { background: var(--grey-50); }
   .pilares__grid { margin-top: var(--sp-7); }
 
   .pilar { display: flex; flex-direction: column; }
@@ -309,8 +306,6 @@ const homeFaq = [
     font-size: 0.9375rem;
     text-decoration: none;
   }
-  /* `white-space: nowrap` no espaço + seta mantém os dois na última palavra. */
-  .pilar__arrow { white-space: nowrap; }
   .pilar__more:hover { text-decoration: underline; }
 
   /* ---------------- Libras ---------------- */
@@ -325,8 +320,7 @@ const homeFaq = [
     gap: clamp(2rem, 5vw, 4rem);
     align-items: center;
   }
-  .libras h2 { color: #fff; margin-top: var(--sp-3); }
-  .libras__eyebrow { color: #93bcc6; }
+  .libras h2 { color: #fff; font-size: var(--fs-h1); }
   .libras__answer {
     margin-top: var(--sp-5);
     color: #d3dee7;
@@ -339,19 +333,33 @@ const homeFaq = [
     gap: var(--sp-4);
     margin-top: var(--sp-6);
   }
+  .libras__para {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--r-md);
+    padding: clamp(1.25rem, 3vw, 1.75rem);
+  }
+  .libras__para h3 { color: #fff; font-size: 1.0625rem; }
+  .libras__para :global(.checks) { margin-top: var(--sp-4); }
+  .libras__para :global(.checks li) { color: #d6e1ea; }
+  .libras__para :global(.checks li::before) {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: #93bcc6;
+  }
+
   .libras__solid { background: #fff; color: var(--navy); }
   .libras__solid:hover { background: var(--teal-100); color: var(--navy-900); }
   .libras__ghost { color: #fff; border-color: rgba(255, 255, 255, 0.4); }
   .libras__ghost:hover { background: rgba(255, 255, 255, 0.1); color: #fff; border-color: #fff; }
 
   /* ---------------- Passos ---------------- */
-  .passos { background: var(--sand); }
+  .passos { background: var(--grey-25); }
   .passos__list {
     list-style: none;
     margin: var(--sp-7) 0 0;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
     gap: clamp(1.25rem, 3vw, 2.5rem);
   }
   .passo h3 { font-size: var(--fs-h4); margin-top: var(--sp-4); }
@@ -370,14 +378,13 @@ const homeFaq = [
   }
 
   /* ---------------- Valores ---------------- */
-  .valores { background: var(--sand-200); padding-block: var(--section-y); }
+  .valores { background: var(--grey-100); padding-block: var(--section-y); }
   .valores__grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
     gap: clamp(2rem, 5vw, 4rem);
     align-items: center;
   }
-  .valores h2 { margin-top: var(--sp-3); }
   .valores__list { margin-top: var(--sp-6); gap: var(--sp-4); }
   .valores__list strong { color: var(--navy); font-weight: 600; }
   .valores__media { display: grid; gap: var(--sp-4); }
@@ -388,6 +395,6 @@ const homeFaq = [
     .libras__grid,
     .valores__grid { grid-template-columns: 1fr; }
     .hero__media { order: -1; max-width: 26rem; }
-    .valores__media { grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); }
+    .valores__media { grid-template-columns: repeat(auto-fit, minmax(min(13rem, 100%), 1fr)); }
   }
 </style>

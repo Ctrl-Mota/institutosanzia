@@ -6,13 +6,16 @@ const year = 2026; // build estático: sem data dinâmica no HTML
 <footer class="ft">
   <div class="wrap ft__inner">
     <div class="ft__brand">
-      <p class="ft__name">Instituto Sanzia</p>
+      <p class="ft__name">{site.name}</p>
       <p class="ft__tag">{site.tagline}</p>
       <p class="ft__contact">
         <a href={`tel:${site.phone.e164}`}>{site.phone.display}</a>
-        {site.address.city && <span class="ft__sep">·</span>}
-        {site.address.city && <span>{site.address.city} — {site.address.state}</span>}
       </p>
+      {
+        site.address.city && (
+          <p class="ft__place">{site.address.city}, {site.address.state}</p>
+        )
+      }
     </div>
 
     <nav class="ft__nav" aria-label="Serviços">
@@ -36,8 +39,8 @@ const year = 2026; // build estático: sem data dinâmica no HTML
   <div class="wrap ft__bottom">
     <p>© {year} {site.legalName}. Todos os direitos reservados.</p>
     <p class="ft__a11y">
-      Site desenvolvido com acessibilidade: contraste AA, navegação por teclado e
-      controle de tamanho de texto.
+      Este site foi feito para ser usado por todos: funciona com teclado, com
+      leitor de tela e com o texto ampliado.
     </p>
   </div>
 </footer>
@@ -62,11 +65,11 @@ const year = 2026; // build estático: sem data dinâmica no HTML
   }
   .ft__tag { margin-top: var(--sp-2); color: #9fb2c1; max-width: 22rem; }
   .ft__contact { margin-top: var(--sp-4); }
-  .ft__sep { padding-inline: var(--sp-2); color: #6d8299; }
+  .ft__place { margin-top: var(--sp-1); color: #9fb2c1; }
 
   .ft__nav {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(11rem, 100%), 1fr));
     gap: var(--sp-5);
   }
   .ft__colTitle { font-weight: 600; margin-bottom: var(--sp-3); }

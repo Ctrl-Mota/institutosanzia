@@ -1,6 +1,7 @@
 ---
 import type { Service } from '../data/services';
 import { site, waLink } from '../data/site';
+import Photo from './Photo.astro';
 
 interface Props {
   service: Service;
@@ -40,7 +41,7 @@ const alt = index % 2 === 1;
 >
   <div class="wrap svc__grid">
     <div class="svc__main">
-      <p class="eyebrow">{service.name}</p>
+      <p class="svc__name">{service.name}</p>
       <h2 id={`${service.id}-titulo`}>{service.question}</h2>
 
       <!-- Answer-first: a resposta vem na primeira frase, sem rodeio. -->
@@ -63,8 +64,13 @@ const alt = index % 2 === 1;
 
     <aside class="svc__aside" aria-label={`Informações sobre ${service.name}`}>
       {
+        service.photo && (
+          <Photo src={service.photo.src} alt={service.photo.alt} ratio="16 / 9" />
+        )
+      }
+      {
         service.forWhom && (
-          <div class="card svc__card">
+          <div class="panel svc__card">
             <h3 class="svc__cardTitle">Indicado para</h3>
             <ul class="checks">
               {service.forWhom.map((f) => <li>{f}</li>)}
@@ -93,8 +99,8 @@ const alt = index % 2 === 1;
 <script type="application/ld+json" set:html={JSON.stringify(serviceSchema)} is:inline />
 
 <style>
-  .svc { padding-block: var(--section-y); background: var(--sand); }
-  .svc--alt { background: var(--sand-200); }
+  .svc { padding-block: var(--section-y); background: var(--grey-25); }
+  .svc--alt { background: var(--grey-100); }
 
   .svc__grid {
     display: grid;
@@ -103,6 +109,12 @@ const alt = index % 2 === 1;
     align-items: start;
   }
 
+  .svc__name {
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--muted);
+  }
   .svc__main h2 { margin-top: var(--sp-3); }
 
   /* A resposta direta tem peso visual maior que o corpo. */
@@ -121,7 +133,6 @@ const alt = index % 2 === 1;
   .svc__cta { margin-top: var(--sp-6); }
 
   .svc__aside { display: grid; gap: var(--sp-5); }
-  .svc__card { border-radius: var(--r-lg); }
   .svc__cardTitle {
     font-size: 1.0625rem;
     margin-bottom: var(--sp-4);

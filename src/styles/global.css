@@ -1,31 +1,34 @@
 /* ==========================================================================
-   Instituto Sanzia — sistema visual
+   Instituto Sânzia Marcela — sistema visual
    Princípio: reduzir ansiedade. Muito ar, curvas suaves, contraste real.
    Nada de urgência, contador, popup de saída ou animação que chama atenção.
    ========================================================================== */
 
 :root {
-  /* --- Cor: base da identidade dela + neutro quente --- */
+  /* --- Cor: azul, cinza, preto e branco.
+     A cliente pediu em 01/09 para tirar o neutro quente: "esse amarelinho, se
+     conseguir deixar azul, cinza, preto e branco, pra ficar mais na tabela do
+     Instituto mesmo". A calma agora vem da forma e do respiro, não do tom
+     quente — e as fotos do espaço real trazem a madeira. --- */
   --navy-900: #0e2338;
-  --navy: #14324f;   /* azul-marinho profundo */
+  --navy-800: #1e2b36;  /* corpo de texto: o "preto" da paleta, sem o ofuscamento do preto puro */
+  --navy: #14324f;      /* azul-marinho profundo */
   --navy-600: #274a6b;
 
-  --teal: #4a7c8c;   /* azul-petróleo acinzentado */
-  --teal-700: #2f5d6b; /* texto/CTA — 7.2:1 sobre branco */
+  --teal: #4a7c8c;      /* azul-petróleo acinzentado */
+  --teal-700: #2f5d6b;  /* texto/CTA — 7.2:1 sobre branco */
   --teal-100: #dde8ea;
 
-  --sand: #f7f2ea;      /* neutro quente: fundo principal */
-  --sand-200: #efe6d8;  /* fundo alternado / cards */
-  --cool: #eff2f5;      /* cinza-claro do material dela */
+  --white: #ffffff;     /* superfícies: cards e painéis */
+  --grey-25: #f7f9fb;   /* fundo principal */
+  --grey-50: #edf1f5;   /* faixas de seção */
+  --grey-100: #e2e9ef;  /* faixa alternada dos serviços */
 
-  --ink: #1e2b36;    /* corpo de texto */
-  --muted: #55656f;  /* apoio — 5.3:1 sobre --sand */
-  --line: #ddd5c8;
+  --ink: var(--navy-800);
+  --muted: #55656f;     /* apoio — 5.6:1 sobre --grey-25 */
+  --line: #d8dfe5;
 
-  --accent: #b5734e;      /* terracota — só decorativo */
-  --accent-700: #96593a;  /* versão para texto, 4.9:1 */
-
-  --wa: #1f7a55;     /* verde WhatsApp escurecido p/ contraste AA */
+  --wa: #1f7a55;        /* verde WhatsApp escurecido p/ contraste AA */
 
   /* --- Tipografia --- */
   --font-serif: 'Source Serif 4', 'Iowan Old Style', Georgia, 'Times New Roman', serif;
@@ -33,7 +36,6 @@
 
   /* Escala fluida. Base 17px -> 18px. O controle de fonte multiplica isto. */
   --fs-base: clamp(1.0625rem, 1.0125rem + 0.16vw, 1.125rem);
-  --fs-sm: 0.9375rem;
   --fs-lg: clamp(1.1875rem, 1.125rem + 0.28vw, 1.3125rem);
   --fs-h4: clamp(1.125rem, 1.06rem + 0.3vw, 1.25rem);
   --fs-h3: clamp(1.375rem, 1.25rem + 0.6vw, 1.625rem);
@@ -52,21 +54,17 @@
   --sp-5: 1.5rem;
   --sp-6: 2rem;
   --sp-7: 3rem;
-  --sp-8: 4rem;
-  --sp-9: 6rem;
   --section-y: clamp(3.5rem, 7vw, 6.5rem);
 
   /* --- Forma --- */
   --r-sm: 10px;
   --r-md: 18px;
   --r-lg: 28px;
-  --r-xl: 40px;
   --r-pill: 999px;
 
   /* Sombras muito suaves — presença sem peso */
   --sh-1: 0 1px 2px rgba(20, 50, 79, 0.04), 0 2px 8px rgba(20, 50, 79, 0.05);
   --sh-2: 0 2px 4px rgba(20, 50, 79, 0.05), 0 8px 24px rgba(20, 50, 79, 0.07);
-  --sh-focus: 0 0 0 3px var(--sand), 0 0 0 6px var(--teal-700);
 
   --maxw: 74rem;
   --measure: 40rem; /* largura de leitura confortável */
@@ -86,8 +84,11 @@ html[data-fontscale='2'] { font-size: 125%; }
 
 html {
   -webkit-text-size-adjust: 100%;
-  scroll-behavior: smooth;
-  /* âncoras não ficam escondidas atrás do header sticky */
+  /* Sem `scroll-behavior: smooth` de propósito: com a régua de âncoras, o
+     clique iniciava uma animação de rolagem que brigava com a roda do mouse e
+     com o observer da régua, e a página engasgava. Salto direto não tem como
+     conflitar — e para este público movimento gratuito não ajuda.
+     O `scroll-padding-top` continua tirando a seção de trás das barras fixas. */
   scroll-padding-top: calc(var(--header-h) + 4.5rem);
 }
 
@@ -96,7 +97,7 @@ body {
   font-size: var(--fs-base);
   line-height: var(--lh-body);
   color: var(--ink);
-  background: var(--sand);
+  background: var(--grey-25);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
@@ -150,15 +151,6 @@ a:hover { color: var(--navy); }
 .section { padding-block: var(--section-y); }
 .stack > * + * { margin-top: var(--sp-4); }
 
-.eyebrow {
-  font-family: var(--font-sans);
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: var(--teal-700);
-}
-
 .lede {
   font-size: var(--fs-lg);
   color: var(--muted);
@@ -198,45 +190,55 @@ a:hover { color: var(--navy); }
   text-decoration: none;
   cursor: pointer;
   transition: background-color 160ms ease, color 160ms ease,
-              border-color 160ms ease, transform 160ms ease;
+              border-color 160ms ease;
 }
-.btn:hover { transform: translateY(-1px); }
+/* Sem elevação no hover: a cor já comunica. O feedback fica no :active, que
+   responde a uma ação da pessoa em vez de decorar o hover. */
 
 .btn--primary { background: var(--teal-700); color: #fff; }
 .btn--primary:hover { background: var(--navy); color: #fff; }
+.btn--primary:active { background: var(--navy-900); }
 
 .btn--ghost { background: transparent; color: var(--navy); border-color: var(--line); }
-.btn--ghost:hover { background: #fff; border-color: var(--teal); color: var(--navy); }
+.btn--ghost:hover { background: var(--white); border-color: var(--teal); color: var(--navy); }
+.btn--ghost:active { background: var(--grey-100); }
 
 .btn--wa { background: var(--wa); color: #fff; }
 .btn--wa:hover { background: #175f42; color: #fff; }
+.btn--wa:active { background: #12452f; }
 
 .btn svg { flex: none; }
 
-/* ---------------------------------------------------------------- cartões */
+/* -------------------------------------------------------- superfícies
+   Dois níveis, e a diferença carrega informação:
+   .card  = é um destino clicável (só os 3 pilares da home)
+   .panel = é informação, fica quieta atrás do texto principal
+   Sombra fica reservada para "flutua sobre a página". */
 .card {
-  background: #fff;
+  background: var(--white);
   border: 1px solid var(--line);
   border-radius: var(--r-lg);
   padding: clamp(1.5rem, 3vw, 2.25rem);
   box-shadow: var(--sh-1);
 }
 
+.panel {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+}
+
 .grid {
   display: grid;
   gap: clamp(1rem, 2.5vw, 1.75rem);
 }
-.grid--3 { grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); }
-.grid--2 { grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); }
-
-/* ---------------------------------------------------------------- fundos */
-.bg-sand { background: var(--sand); }
-.bg-sand-2 { background: var(--sand-200); }
-.bg-cool { background: var(--cool); }
-.bg-navy { background: var(--navy); color: #fff; }
-.bg-navy h1, .bg-navy h2, .bg-navy h3 { color: #fff; }
-.bg-navy .lede { color: #cfdae4; }
-.bg-navy a { color: #cfe4ea; }
+/* O `min(...)` deixa a trilha encolher abaixo do próprio mínimo. Sem ele, em
+   tela estreita com o texto ampliado a trilha fica maior que a viewport e o
+   conteúdo é cortado — quem aumenta a fonte é justamente quem menos deve
+   perder conteúdo. */
+.grid--3 { grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr)); }
+.grid--2 { grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr)); }
 
 /* ---------------------------------------------------------------- listas */
 .checks { list-style: none; padding: 0; display: grid; gap: var(--sp-3); }
@@ -257,12 +259,10 @@ a:hover { color: var(--navy); }
 
 /* ---------------------------------------------------- movimento reduzido */
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
     transition-duration: 0.001ms !important;
   }
-  .btn:hover { transform: none; }
 }
 
 /* ------------------------------------------------------- alto contraste */

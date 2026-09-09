@@ -36,7 +36,7 @@ const breadcrumb = {
   title={`${category.metaTitle} | ${site.name}`}
   description={category.metaDescription}
   path={path}
-  waOrigin={category.title.toLowerCase()}
+  waOrigin={category.title}
 >
   <script
     slot="head"
@@ -67,16 +67,16 @@ const breadcrumb = {
     ))
   }
 
-  <Faq items={category.faq} title={`Perguntas frequentes sobre ${category.navLabel.toLowerCase()}`} />
+  <Faq items={category.faq} title={`Perguntas frequentes sobre ${category.navLabel}`} />
 
-  <OrganicDivider bg="var(--cool)" fill="var(--navy)" variant={3} height={104} />
+  <OrganicDivider bg="var(--grey-50)" fill="var(--navy)" />
 
-  <ContactBlock origin={category.title.toLowerCase()} />
+  <ContactBlock origin={category.title} />
 </BaseLayout>
 
 <style>
   .hero {
-    background: var(--sand);
+    background: var(--grey-25);
     padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(2rem, 4vw, 3rem);
   }
   .hero__inner { max-width: 52rem; }

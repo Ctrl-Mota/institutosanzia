@@ -23,6 +23,8 @@ export interface Service {
   /** Informação prática: duração, formato, quem atende. */
   practical?: { label: string; value: string }[];
   status: ConteudoStatus;
+  /** Foto de um atendimento real. Arquivo em public/img/. */
+  photo?: { src: string; alt: string };
   /** Sobrescreve a mensagem do WhatsApp da seção. */
   waMessage?: string;
 }
@@ -54,11 +56,11 @@ export const categories: Category[] = [
   // ────────────────────────────────────────────────────────────────
   {
     slug: 'cuidado-psicologico',
-    navLabel: 'Cuidado psicológico',
-    title: 'Cuidado psicológico',
+    navLabel: 'Cuidado Psicológico',
+    title: 'Cuidado Psicológico',
     metaTitle: 'Psicoterapia e avaliação neuropsicológica',
     metaDescription:
-      'Psicoterapia para crianças, adolescentes e adultos, avaliação neuropsicológica completa e orientação profissional no Instituto Sanzia.',
+      'Psicoterapia para crianças, adolescentes e adultos, avaliação neuropsicológica completa e orientação profissional no Instituto Sânzia Marcela.',
     promise:
       'Escuta profissional e avaliação para dar nome ao que está incomodando.',
     heroSupport:
@@ -160,8 +162,8 @@ export const categories: Category[] = [
   // ────────────────────────────────────────────────────────────────
   {
     slug: 'desenvolvimento-e-terapias',
-    navLabel: 'Desenvolvimento e terapias',
-    title: 'Desenvolvimento e terapias',
+    navLabel: 'Desenvolvimento e Terapias',
+    title: 'Desenvolvimento e Terapias',
     metaTitle: 'Terapia ABA, terapia ocupacional e psicopedagogia',
     metaDescription:
       'Terapias para o desenvolvimento infantil: ABA, psicopedagogia, psicomotricidade, arteterapia e terapia ocupacional, com equipe multidisciplinar.',
@@ -221,6 +223,12 @@ export const categories: Category[] = [
         // ATENÇÃO: o Instituto listou este serviço na categorização mas não
         // enviou a descrição. O texto acima é rascunho nosso — precisa de aprovação.
         status: 'pendente',
+        // Foto de um atendimento real, enviada por ela em 02/09. Aparece a mão
+        // da criança, não o rosto.
+        photo: {
+          src: 'atendimento-psicopedagogia.jpg',
+          alt: 'Atendimento psicopedagógico em andamento: a mão da criança colorindo uma atividade de sílabas, ao lado da mão da terapeuta',
+        },
       },
       {
         id: 'psicomotricidade',
@@ -318,8 +326,8 @@ export const categories: Category[] = [
   // ────────────────────────────────────────────────────────────────
   {
     slug: 'apoio-educacional',
-    navLabel: 'Apoio educacional',
-    title: 'Apoio educacional',
+    navLabel: 'Apoio Educacional',
+    title: 'Apoio Educacional',
     metaTitle: 'Reforço escolar e aulas de inglês e italiano',
     metaDescription:
       'Reforço escolar da alfabetização ao Ensino Médio e aulas particulares de inglês e italiano, com acompanhamento individualizado.',
@@ -355,7 +363,7 @@ export const categories: Category[] = [
       {
         id: 'aulas-de-idiomas',
         name: 'Inglês e Italiano',
-        question: 'Como são as aulas particulares de idiomas?',
+        question: 'Como são as aulas de inglês e italiano?',
         answer:
           'São aulas particulares de inglês e italiano montadas em torno do seu objetivo — conversar, passar em uma prova, acompanhar a escola, se preparar para uma viagem ou para a cidadania.',
         body: [
@@ -394,11 +402,11 @@ export const categories: Category[] = [
   // ────────────────────────────────────────────────────────────────
   {
     slug: 'cursos-e-eventos',
-    navLabel: 'Cursos e eventos',
-    title: 'Cursos e eventos',
+    navLabel: 'Cursos e Eventos',
+    title: 'Cursos e Eventos',
     metaTitle: 'Curso Básico de Libras',
     metaDescription:
-      'Curso Básico de Libras no Instituto Sanzia: comunicação em Língua Brasileira de Sinais desde a primeira aula. Turmas com vagas limitadas.',
+      'Curso Básico de Libras no Instituto Sânzia Marcela: comunicação em Língua Brasileira de Sinais desde a primeira aula, com prática desde o começo.',
     promise: 'Formação aberta à comunidade, começando pela língua que aproxima.',
     heroSupport:
       'Cursos e encontros abertos ao público. A programação atual traz o Curso Básico de Libras.',

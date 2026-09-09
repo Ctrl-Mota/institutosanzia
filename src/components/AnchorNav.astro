@@ -26,7 +26,7 @@ const { services } = Astro.props;
     position: sticky;
     top: var(--header-h);
     z-index: 50;
-    background: var(--cool);
+    background: var(--grey-50);
     border-block: 1px solid var(--line);
   }
   .anchors .wrap {
@@ -37,10 +37,8 @@ const { services } = Astro.props;
   }
   .anchors__hint {
     flex: none;
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
     color: var(--muted);
     margin: 0;
   }
@@ -67,7 +65,7 @@ const { services } = Astro.props;
     white-space: nowrap;
     border: 1px solid transparent;
   }
-  .anchors a:hover { background: #fff; border-color: var(--line); }
+  .anchors a:hover { background: var(--white); border-color: var(--line); }
   .anchors a[data-active='true'] {
     background: var(--navy);
     color: #fff;
@@ -87,16 +85,49 @@ const { services } = Astro.props;
     .map((l) => document.getElementById(l.dataset.anchor!))
     .filter((el): el is HTMLElement => el !== null);
 
+  const rail = document.querySelector<HTMLElement>('.anchors ul');
+
   if (sections.length) {
+    /**
+     * Traz a pílula ativa para dentro da régua mexendo APENAS no scrollLeft
+     * dela.
+     *
+     * Aqui havia um `scrollIntoView`, e era bug de rolagem: por especificação
+     * ele rola toda a cadeia de ancestrais, não só o contêiner rolável mais
+     * próximo — e o observer o chamava dezenas de vezes por gesto de scroll.
+     * Rolagem programática durante uma rolagem suave em curso cancela ou
+     * atropela a animação — e o `scroll-behavior: smooth` que existia no
+     * `html` saiu junto, pelo mesmo motivo (ver global.css). Mexer no
+     * scrollLeft de um elemento não tem como afetar a rolagem da página.
+     */
+    const revelarPilula = (link: HTMLAnchorElement) => {
+      if (!rail || rail.scrollWidth <= rail.clientWidth) return;
+      const pill = link.getBoundingClientRect();
+      const box = rail.getBoundingClientRect();
+      const folga = 16;
+      if (pill.left < box.left) {
+        rail.scrollLeft -= box.left - pill.left + folga;
+      } else if (pill.right > box.right) {
+        rail.scrollLeft += pill.right - box.right + folga;
+      }
+    };
+
+    let atual: string | null = null;
+
     const setActive = (id: string | null) => {
+      // O observer dispara muitas vezes por gesto; sem esta guarda o trabalho
+      // todo se repetia a cada disparo.
+      if (id === atual) return;
+      atual = id;
+
       for (const l of links) {
         const on = l.dataset.anchor === id;
         if (on) l.dataset.active = 'true';
         else delete l.dataset.active;
       }
-      // Mantém a pílula ativa visível na régua rolável do mobile.
-      const active = links.find((l) => l.dataset.active === 'true');
-      active?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+
+      const active = links.find((l) => l.dataset.anchor === id);
+      if (active) revelarPilula(active);
     };
 
     const observer = new IntersectionObserver(

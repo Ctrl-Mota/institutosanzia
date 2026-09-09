@@ -19,21 +19,20 @@ export interface SiteConfig {
 }
 
 export const site: SiteConfig = {
-  name: 'Instituto Sanzia',
-  legalName: 'Instituto Sanzia',
-  tagline: 'Cuidado, desenvolvimento e aprendizagem em um só lugar',
+  name: 'Instituto Sânzia Marcela',
+  legalName: 'Instituto Sânzia Marcela',
+  // Assinatura da marca, pedida pela cliente em 27/08.
+  tagline: 'Psicologia e Educação Integrada',
   description:
     'Instituto multidisciplinar com psicologia clínica, avaliação neuropsicológica, terapias de desenvolvimento, apoio educacional e curso de Libras.',
   url: 'https://institutosanzia.com.br',
 
-  // TODO(cliente): confirmar endereço completo, CEP e horários antes do go-live.
-  // ATENÇÃO: `city` foi PRESUMIDA a partir do DDD 22 — o DDD cobre Macaé,
-  // Campos, Cabo Frio, Nova Friburgo e Itaperuna. CONFIRMAR antes do go-live:
-  // a cidade aparece no H1 da home, no FAQ e no schema LocalBusiness.
+  // TODO(cliente): confirmar endereço completo e CEP antes do go-live.
+  // Cidade confirmada pela cliente em 27/08.
   address: {
     street: '',
     district: '',
-    city: 'Macaé',
+    city: 'Búzios',
     state: 'RJ',
     postalCode: '',
     country: 'BR',
@@ -49,7 +48,7 @@ export const site: SiteConfig = {
   email: '', // TODO(cliente)
 
   social: {
-    instagram: '', // TODO(cliente): @handle
+    instagram: '@institutosanziamarcela',
   },
 
   openingHours: [

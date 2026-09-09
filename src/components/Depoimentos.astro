@@ -1,0 +1,164 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+import { depoimentos } from '../data/depoimentos';
+
+// Mesma convenção do Photo.astro: arquivo ausente não quebra o layout, avisa no
+// build. Aqui o aviso cobre também a autorização de uso de imagem.
+const itens = depoimentos.map((d) => {
+  const base = path.join(process.cwd(), 'public');
+  const temVideo = fs.existsSync(path.join(base, 'video', `${d.slug}.mp4`));
+  const temPoster = fs.existsSync(path.join(base, 'img', `${d.slug}.jpg`));
+  const temLegenda = fs.existsSync(path.join(base, 'video', `${d.slug}.pt.vtt`));
+
+  if (!temVideo) console.warn(`[depoimento ausente] public/video/${d.slug}.mp4`);
+  if (!temLegenda) console.warn(`[legenda ausente] public/video/${d.slug}.pt.vtt`);
+  if (d.autorizacao !== 'ok') {
+    console.warn(
+      `[autorização:${d.autorizacao}] ${d.slug} — relato de paciente no ar sem autorização de uso de imagem confirmada (ver CONTENT-TODO.md)`,
+    );
+  }
+  return { ...d, temVideo, temPoster, temLegenda };
+});
+---
+
+<section class="depos" aria-labelledby="depos-titulo">
+  <div class="wrap">
+    <div class="depos__head measure">
+      <h2 id="depos-titulo">O que as mães contam</h2>
+      <p class="lede">
+        Três mães quiseram registrar o que mudou para os filhos delas. Os vídeos
+        têm legenda e só tocam se você quiser.
+      </p>
+    </div>
+
+    <ul class="depos__grid" role="list">
+      {
+        itens.map((d) => (
+          <li class="depo">
+            <figure class="depo__fig">
+              {
+                d.temVideo ? (
+                  <video
+                    class="depo__video"
+                    controls
+                    preload="none"
+                    playsinline
+                    poster={d.temPoster ? `/img/${d.slug}.jpg` : undefined}
+                    width="400"
+                    height="712"
+                  >
+                    <source src={`/video/${d.slug}.mp4`} type="video/mp4" />
+                    {
+                      d.temLegenda && (
+                        <track
+                          kind="captions"
+                          src={`/video/${d.slug}.pt.vtt`}
+                          srclang="pt"
+                          label="Português"
+                          default
+                        />
+                      )
+                    }
+                    <p>
+                      Seu navegador não abre vídeo.
+                      <a href={`/video/${d.slug}.mp4`}>Baixar este relato</a>.
+                    </p>
+                  </video>
+                ) : (
+                  <div class="depo__ausente" role="img" aria-label={`Relato de ${d.quem}, a receber`}>
+                    Vídeo a receber<br /><code>{d.slug}.mp4</code>
+                  </div>
+                )
+              }
+
+              <figcaption class="depo__cap">
+                <blockquote class="depo__quote">{d.destaque}</blockquote>
+                <p class="depo__quem">
+                  <b>{d.quem}</b>, {d.contexto}
+                </p>
+                <p class="depo__meta">Vídeo de {d.duracao}, com legenda</p>
+              </figcaption>
+            </figure>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .depos { background: var(--grey-25); padding-block: var(--section-y); }
+  .depos__head .lede { margin-top: var(--sp-4); font-size: 1.0625rem; }
+
+  .depos__grid {
+    list-style: none;
+    margin: var(--sp-7) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 17rem));
+    gap: clamp(1.5rem, 4vw, 3rem);
+    justify-content: start;
+  }
+
+  .depo__fig { margin: 0; }
+
+  /* O vídeo é vertical (gravado no celular). A moldura acompanha, em vez de
+     forçar 16:9 com barras preta dos lados. */
+  .depo__video {
+    display: block;
+    width: 100%;
+    aspect-ratio: 400 / 712;
+    background: var(--navy-900);
+    border-radius: var(--r-md);
+    border: 1px solid var(--line);
+  }
+
+  .depo__ausente {
+    display: grid;
+    place-content: center;
+    text-align: center;
+    aspect-ratio: 400 / 712;
+    border: 1px dashed var(--line);
+    border-radius: var(--r-md);
+    background: var(--grey-100);
+    color: var(--muted);
+    font-size: 0.8125rem;
+    line-height: 1.6;
+  }
+  .depo__ausente code {
+    font-size: 0.75rem;
+    background: var(--white);
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+
+  .depo__cap { margin-top: var(--sp-4); }
+
+  .depo__quote {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: 1.0625rem;
+    line-height: 1.45;
+    color: var(--navy);
+  }
+  .depo__quote::before { content: '“'; }
+  .depo__quote::after { content: '”'; }
+
+  .depo__quem {
+    margin-top: var(--sp-3);
+    font-size: 0.9375rem;
+    color: var(--muted);
+  }
+  .depo__quem b { color: var(--navy); font-weight: 600; }
+
+  .depo__meta {
+    margin-top: var(--sp-2);
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+
+  @media (max-width: 34rem) {
+    .depos__grid { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>

@@ -1,89 +1,160 @@
-# Pendências de conteúdo — Instituto Sanzia
+# Pendências de conteúdo — Instituto Sânzia Marcela
 
-O build imprime um aviso para cada item pendente. Nada aqui impede publicar,
-mas tudo aqui precisa ser resolvido antes do go-live.
+O build imprime um aviso por item pendente. Log limpo é o critério de go-live.
+Hoje: **15 avisos** — 11 textos de serviço, 1 foto e 3 autorizações de imagem.
+
+## Resolvido com a mídia de 27/08 → 04/09
+
+- [x] **Nome da marca** → `Instituto Sânzia Marcela` (o print de 27/08 marcava em
+      vermelho onde entrava o "Marcela")
+- [x] **Subtítulo** → `Psicologia e Educação Integrada`
+- [x] **Cidade** → Búzios (o print marcava "MACAÉ" de verde)
+- [x] **Instagram** → `@institutosanziamarcela`, entra no `sameAs` do schema
+- [x] **Iniciais maiúsculas** → as 4 categorias em Title Case. O print do menu
+      tinha um ponto verde na segunda palavra de cada item: "psicológico",
+      "terapias", "educacional", "eventos". Era isso mesmo.
+- [x] **Paleta** → azul, cinza, preto e branco. No áudio de 01/09: *"esse
+      amarelinho, se conseguir deixar azul, cinza, preto e branco, pra ficar
+      mais na tabela do Instituto mesmo"*. O neutro quente (areia) saiu.
+- [x] **3 fotos reais do espaço** + **1 foto de atendimento** (ver seção 5)
+- [x] **3 vídeos de depoimento** publicados na home (ver seção 6)
 
 ## 1. Bloqueadores de go-live
 
 | # | Item | Onde | Situação |
 |---|------|------|----------|
-| 1 | **Cidade** | `src/data/site.ts` → `address.city` | **PRESUMIDA** como Macaé a partir do DDD 22. O DDD cobre Macaé, Campos, Cabo Frio, Nova Friburgo e Itaperuna. Aparece no H1 da home, no FAQ e no schema. **Confirmar.** |
-| 2 | Endereço completo + CEP | `src/data/site.ts` → `address` | vazio |
-| 3 | Horário de funcionamento | `src/data/site.ts` → `openingHours` | vazio (formato schema.org, ex. `'Mo-Fr 08:00-18:00'`) |
-| 4 | E-mail de contato | `src/data/site.ts` → `email` | vazio |
-| 5 | @ do Instagram | `src/data/site.ts` → `social.instagram` | vazio (entra no `sameAs` do schema) |
-| 6 | Domínio final | `astro.config.mjs` → `site` e `public/robots.txt` | assumido `institutosanzia.com.br` |
+| 1 | Endereço completo + CEP | `src/data/site.ts` → `address` | vazio |
+| 2 | Horário de funcionamento | `src/data/site.ts` → `openingHours` | vazio (formato schema.org) |
+| 3 | E-mail de contato | `src/data/site.ts` → `email` | vazio |
+| 4 | Domínio final | `astro.config.mjs`, `public/robots.txt` | assumido `institutosanzia.com.br`; o Instagram é `institutosanziamarcela` — **confirmar** |
 
-## 2. Textos dos serviços
+Autorização dos depoimentos: **liberada em 08/09**, os três em
+`autorizacao: 'ok'`.
 
-`status` em `src/data/services.ts` controla isto:
+## 2. Ainda falta pedir
 
-- `'pendente'` — **não há texto do Instituto.** O que está no site é rascunho nosso.
-- `'rascunho'` — redação nossa a partir da categorização, aguardando revisão.
-- `'aprovado'` — texto do Instituto, revisado. Ninguém está aqui ainda.
+- **O texto de Psicopedagogia.** A imagem de 02/09 legendada "Atendimento
+  Psicopedagógico" era uma **foto do atendimento**, não a descrição do serviço.
+  O serviço segue em `status: 'pendente'` com rascunho nosso.
+- **Um áudio de 27/08 12:49:50** não veio no reexport (veio o de 12:50:45).
+- **Foto da recepção.** No áudio de 01/09 ela diz que um rapaz ia fotografar a
+  recepção. Enquanto não chega, o hero usa a foto vertical da sala.
+- **Foto do Curso de Libras** (`curso-libras.jpg`) — é o único aviso de foto no
+  build.
 
-### Pendente de verdade
+## 3. Textos dos serviços
 
-- **Psicopedagogia** (`desenvolvimento-e-terapias#psicopedagogia`) — foi listada na
-  categorização, mas a descrição não veio. O texto atual é nosso e precisa de
-  aprovação ou substituição.
+`status` em `src/data/services.ts`:
 
-### Pergunta em aberto
+- `'pendente'` — **Psicopedagogia** (ver seção 2).
+- `'rascunho'` — os outros 10. Redação nossa em formato answer-first,
+  aguardando o aval dela em precisão técnica e tom.
+- `'aprovado'` — ninguém ainda.
 
-- **Musicoterapia** — estava na proposta comercial e **não aparece** na lista de
-  serviços que ela enviou. Saiu do portfólio ou foi esquecida? Se voltar, entra
-  em `desenvolvimento-e-terapias` como uma nova entrada em `services`.
+**Musicoterapia** continua em aberto: estava na proposta comercial e não aparece
+na lista de serviços que ela enviou. Saiu do portfólio?
 
-### Rascunhos aguardando revisão dela
+## 4. Dados do Curso de Libras
 
-Todos os outros. Ela enviou as descrições de oito serviços; os textos do site
-foram redigidos no formato *answer-first* (a resposta na primeira frase) para
-performar em busca e em resposta de IA. Precisam do aval dela em duas frentes:
-precisão técnica e tom de voz.
+Em `services.ts` → `cursos-e-eventos#curso-libras` → `practical`, tudo
+`'A confirmar'`: carga horária, datas das turmas, certificado. Falta também
+valor e forma de pagamento.
 
-## 3. Dados do Curso de Libras
+## 5. Fotografia
 
-Em `services.ts` → `cursos-e-eventos#curso-libras` → `practical`:
+| Arquivo | Uso | Origem | Situação |
+|---------|-----|--------|----------|
+| `espaco-sala-vertical.jpg` | Hero da home | 02/09 12:15 | **pronta** |
+| `espaco-sala-1.jpg` | Diferenciais | 04/09 13:09 | **pronta** |
+| `espaco-sala-2.jpg` | Diferenciais | 02/09 12:16 | **pronta** |
+| `atendimento-psicopedagogia.jpg` | Seção de Psicopedagogia | 02/09 11:07 | **pronta** |
+| `og-default.jpg` | Preview de link no WhatsApp | gerado da marca | **pronta** |
+| `espaco-recepcao.jpg` | (reservado, se a foto da recepção chegar) | — | falta |
 
-- Carga horária — `'A confirmar'`
-- Datas / periodicidade das turmas — `'A confirmar'`
-- Certificado (emite? de quantas horas?) — `'A confirmar'`
-- Valor e forma de pagamento
+O `og-default.jpg` **não é foto**: é um card de marca 1200×630 (marinho, nome em
+Source Serif, a curva de assinatura). A fonte editável está em
+`src/assets/og-default.svg`; para regerar, com `ffmpeg` e `qlmanage`:
 
-## 4. Fotografia
+```
+qlmanage -t -s 1200 -o /tmp src/assets/og-default.svg
+ffmpeg -y -i /tmp/og-default.svg.png -vf "crop=1200:630:0:0" -q:v 2 public/img/og-default.jpg
+```
 
-Cada foto ausente vira um placeholder identificado no layout e um aviso no
-build — não quebra nada. Salvar em `public/img/` com o nome exato:
+### Foto de turma de Libras: não existe mais esse slot
 
-| Arquivo | Uso | Proporção |
-|---------|-----|-----------|
-| `espaco-recepcao.jpg` | Hero da home | 4:5 (vertical) |
-| `curso-libras.jpg` | Bloco do curso na home | 3:2 |
-| `espaco-sala-1.jpg` | Sala de atendimento infantil | 4:3 |
-| `espaco-sala-2.jpg` | Sala de psicoterapia | 4:3 |
-| `og-default.jpg` | Preview de link (WhatsApp, Instagram) | 1200×630 |
+O bloco do Curso de Libras na home tinha um placeholder de foto de turma. Foto de
+aula de Libras exige rosto e mão de aluno real, com autorização de cada um — e
+uma imagem genérica pesaria contra justamente nesse bloco, que é o momento mais
+forte da página. O espaço passou a carregar **informação**: o painel "Para quem
+é", alimentado por `services.ts` → `curso-libras.forWhom`.
 
-Sem `og-default.jpg` o link compartilhado no WhatsApp aparece sem imagem —
-é o primeiro contato de boa parte do público, então vale prioridade.
+Se ela mandar uma foto real de turma (com autorização), vale reavaliar; hoje o
+bloco não depende de foto nenhuma.
 
-Faltam também os ícones de marca, que dependem do logo em vetor:
+### Duas fotos NÃO usadas, de propósito
+
+`-0000040` (sala com brinquedos) e `-0000038` (materiais de psicomotricidade)
+ficaram fora. No áudio de 27/08 12:50 ela explica a origem: *"eu mandei a foto
+do espaço e pedi o chat para colocar elementos que associassem à psicologia
+infantil"*. São composições geradas por IA sobre a foto real, e ela mesma nota
+que ficaram no mesmo ângulo, repetitivas.
+
+Imagem de interior gerada por IA no site de uma clínica real é risco de
+credibilidade: quem visita o espaço percebe que não corresponde. E ela já tinha
+a solução melhor, dita no mesmo áudio: *"posso mandar uma foto, tipo a mãozinha
+da criança e algumas coisas na mesa"* — que é exatamente
+`atendimento-psicopedagogia.jpg`, foto real, sem rosto de criança.
+
+Se quiser mais fotos "em ação" nesse formato, é o caminho: mão, material,
+recorte fechado. Um serviço pode receber uma em
+`services.ts` → `photo: { src, alt }`.
+
+**Não usar** foto de estoque nem composição de IA.
+
+Ícones de marca, que dependem do logo em vetor:
 
 | Arquivo | Uso |
 |---------|-----|
 | `public/favicon.svg` | provisório, feito a partir do "S" — trocar pelo logo real |
-| `public/apple-touch-icon.png` | 180×180, atalho no iOS (a tag no `<head>` só volta quando o arquivo existir) |
+| `public/apple-touch-icon.png` | 180×180; a tag no `<head>` só volta quando o arquivo existir |
 
-Ainda faltam pedir: mais 3 ou 4 ambientes reais (sala de terapia ocupacional,
-espaço de psicomotricidade, fachada, sala do reforço). Foto do espaço real vale
-mais que banco de imagens — e o público reconhece foto de estoque.
+## 6. Depoimentos — no ar, mas com pendência jurídica
 
-**Não usar** foto de estoque de criança sorrindo.
+Seção **"O que as mães contam"** na home, entre os diferenciais e o FAQ.
+Dados em `src/data/depoimentos.ts`.
 
-## 5. Antes de publicar
+Três mães gravaram por conta própria. Pelo áudio de 03/09, ela escolheu mães
+"mais comunicativas" de frentes diferentes (uma de psicologia, uma de
+psicopedagogia); a terceira gravou de Friburgo, em viagem.
 
-- [ ] Preencher itens 1 a 6 da seção 1
-- [ ] Substituir/aprovar todos os `status` para `'aprovado'`
-- [ ] Colocar as 5 fotos da seção 4
-- [ ] Rodar `npm run build` e confirmar **zero avisos** no log
-- [ ] Testar os deep links do WhatsApp em um celular real
-- [ ] Rodar Lighthouse (a11y e SEO em 100) e um teste de leitor de tela no menu
+**O que já foi tratado:**
+
+- **Peso.** 30 MB → 8 MB (h264 CRF 30, 400×712). Com `preload="none"`, o
+  carregamento da home busca **zero byte** de vídeo — só os `.vtt`, poucos KB.
+  Nada toca sozinho.
+- **Recorte pedido.** No áudio de 03/09: *"vê se tem como cortar a parte da
+  parede ali"*. `depoimento-1` teve 110px de parede removidos acima da cabeça.
+  Os outros dois ficaram como foram gravados — você disse no áudio que *"quanto
+  mais artesanal, melhor"*.
+- **Legendas** em `*.pt.vtt`, ligadas por padrão. Num instituto que ensina
+  Libras, legenda não é extra.
+- **Nome de criança fora.** As mães dizem o nome dos filhos em áudio. Legenda é
+  texto indexável, então os nomes foram substituídos por "minha filha" / "meu
+  filho", e a atribuição na tela é por parentesco, não por nome. O áudio em si
+  não dá para alterar sem reeditar.
+
+**Autorização:** liberada em 08/09, os três em `autorizacao: 'ok'`. O campo
+continua no lugar — se qualquer uma das mães pedir para sair, é uma linha por
+depoimento e o vídeo pode ser removido de `public/video/` junto.
+
+O arquivo da autorização escrita de cada mãe fica com o Instituto, não no repo.
+
+## 7. Antes de publicar
+
+- [x] Autorização dos depoimentos (08/09)
+- [x] `og-default.jpg`
+- [ ] Preencher os 4 itens da seção 1
+- [ ] Pedir o texto de Psicopedagogia e passar os `status` para `'aprovado'`
+- [ ] `npm run build` com **zero avisos** (hoje: 11, todos de texto de serviço)
+- [ ] Testar os deep links do WhatsApp e os 3 vídeos em um celular real, no 4G
+- [ ] Lighthouse (a11y e SEO em 100) e um teste de leitor de tela no menu

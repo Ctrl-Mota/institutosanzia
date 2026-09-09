@@ -8,9 +8,7 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 
 <div class="util no-print">
   <div class="wrap util__inner">
-    <p class="util__claim">
-      Atendimento acessível · ensinamos Libras
-    </p>
+    <p class="util__claim">Ensinamos Libras.</p>
     <div class="util__right">
       <a class="util__phone" href={`tel:${site.phone.e164}`}>{site.phone.display}</a>
       <FontSizeControl />
@@ -28,8 +26,8 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
         </svg>
       </span>
       <span class="brand__text">
-        <strong>Instituto Sanzia</strong>
-        <small>Cuidado, desenvolvimento e aprendizagem</small>
+        <strong>{site.name}</strong>
+        <small>{site.tagline}</small>
       </span>
     </a>
 
@@ -71,7 +69,7 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
   /* Barra utilitária: os controles de acessibilidade ficam visíveis por
      princípio, e o header sticky fica livre para marca + navegação. */
   .util {
-    background: var(--cool);
+    background: var(--grey-50);
     border-bottom: 1px solid var(--line);
     font-size: 0.8125rem;
   }
@@ -88,10 +86,8 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
   .util__right { display: flex; align-items: center; flex-wrap: wrap; gap: var(--sp-3) var(--sp-5); }
   .util__phone { font-weight: 600; text-decoration: none; }
   .util__phone:hover { text-decoration: underline; }
-  @media (max-width: 40rem) {
-    .util__claim { display: none; }
-    .util__inner { justify-content: flex-end; }
-  }
+  /* A frase é curta o bastante para caber no mobile — e é o fato mais
+     distintivo do instituto, então não é ela que sai. */
 
   .hdr {
     position: sticky;
@@ -99,7 +95,7 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
     z-index: 60;
     /* Opaco de propósito: backdrop-filter custa caro em Android de entrada e
        quebra a composição em alguns renderizadores. */
-    background: var(--sand);
+    background: var(--grey-25);
     border-bottom: 1px solid var(--line);
   }
   .hdr__inner {
@@ -122,22 +118,22 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
     gap: var(--sp-3);
     text-decoration: none;
     color: var(--navy);
-    /* base 0: a marca não reivindica a largura de max-content, então o botão
-       do menu continua na mesma linha mesmo com o texto ampliado. */
-    flex: 1 1 0;
+    flex: 0 0 auto;
     min-width: 0;
   }
   .brand__mark { flex: none; }
   .brand__text { display: flex; flex-direction: column; line-height: 1.2; min-width: 0; }
   .brand__text strong {
     font-family: var(--font-serif);
-    font-size: 1.15rem;
+    font-size: 1.05rem;
     font-weight: 600;
+    white-space: nowrap;
   }
   .brand__text small {
     font-size: 0.75rem;
     color: var(--muted);
     letter-spacing: 0.01em;
+    white-space: nowrap;
   }
 
   .nav { display: flex; align-items: center; flex-wrap: wrap; gap: var(--sp-4) var(--sp-5); }
@@ -164,13 +160,16 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
     border-bottom-color: var(--teal-700);
     color: var(--teal-700);
   }
-  .nav__extra { display: flex; align-items: center; gap: var(--sp-5); }
+  /* O botão flutuante de WhatsApp está sempre visível e o hero repete o mesmo
+     CTA — no desktop o do header era a terceira cópia da mesma ação. Fica só
+     na gaveta do mobile, onde o flutuante é apenas ícone. */
+  .nav__extra { display: none; }
   .nav__cta { padding: 0.6rem 1.15rem; font-size: 0.9375rem; white-space: nowrap; }
 
   .hdr__toggle {
     display: none;
     flex: none;
-    background: #fff;
+    background: var(--white);
     border: 1px solid var(--line);
     border-radius: var(--r-pill);
     width: 2.9rem;
@@ -188,11 +187,6 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
     border-radius: 2px;
   }
 
-  /* Abaixo de 84rem o subtítulo da marca quebraria em 3 linhas. */
-  @media (max-width: 84rem) {
-    .brand__text small { display: none; }
-  }
-
   /* ---- Mobile / tablet ---- */
   @media (max-width: 72rem) {
     .hdr__toggle { display: inline-flex; }
@@ -202,7 +196,7 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
       flex-direction: column;
       align-items: stretch;
       gap: var(--sp-5);
-      background: var(--sand);
+      background: var(--grey-25);
       border-bottom: 1px solid var(--line);
       padding: var(--sp-5) clamp(1.25rem, 5vw, 2.5rem) var(--sp-6);
       box-shadow: var(--sh-2);
@@ -219,12 +213,16 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
     }
     .nav__list a:hover { border-bottom-color: var(--line); color: var(--teal-700); }
     .nav__extra {
+      display: flex;
       flex-direction: column;
       align-items: stretch;
       gap: var(--sp-4);
     }
     .nav__cta { justify-content: center; padding: 0.85rem 1.4rem; }
-    .brand__text small { display: block; }
+    .brand__text strong,
+    .brand__text small { white-space: normal; }
+    /* base 0: a marca encolhe em vez de empurrar o botão do menu para baixo. */
+    .brand { flex: 1 1 0; }
   }
 </style>
 

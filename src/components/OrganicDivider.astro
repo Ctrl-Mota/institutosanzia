@@ -1,28 +1,32 @@
 ---
-// Divisão de seção com curva suave em vez de corte reto.
+// Uma curva só, usada em todas as divisões — uma forma reconhecível lê como
+// assinatura; três variantes leem como biblioteca de ondas.
 // `bg` = cor da seção acima, `fill` = cor da seção abaixo.
+// `flip` espelha a curva, para o par de entrada e saída de uma faixa.
 interface Props {
   bg?: string;
   fill?: string;
-  variant?: 1 | 2 | 3;
+  flip?: boolean;
   height?: number;
 }
 const {
-  bg = 'var(--sand)',
-  fill = 'var(--cool)',
-  variant = 1,
-  height = 80,
+  bg = 'var(--grey-50)',
+  fill = 'var(--navy)',
+  flip = false,
+  height = 104,
 } = Astro.props;
 
-const paths: Record<number, string> = {
-  1: 'M0,64 C240,8 420,96 720,64 C1020,32 1200,8 1440,44 L1440,120 L0,120 Z',
-  2: 'M0,32 C300,104 560,0 880,40 C1120,70 1300,104 1440,72 L1440,120 L0,120 Z',
-  3: 'M0,84 C180,36 380,20 640,52 C900,84 1160,108 1440,20 L1440,120 L0,120 Z',
-};
+const curva =
+  'M0,64 C240,8 420,96 720,64 C1020,32 1200,8 1440,44 L1440,120 L0,120 Z';
 ---
 <div class="divider" style={`--dv-bg:${bg}; --dv-h:${height}px;`} aria-hidden="true">
-  <svg viewBox="0 0 1440 120" preserveAspectRatio="none" focusable="false">
-    <path d={paths[variant]} fill={fill} />
+  <svg
+    viewBox="0 0 1440 120"
+    preserveAspectRatio="none"
+    focusable="false"
+    class:list={[flip && 'is-flipped']}
+  >
+    <path d={curva} fill={fill} />
   </svg>
 </div>
 
@@ -36,4 +40,5 @@ const paths: Record<number, string> = {
     width: 100%;
     height: var(--dv-h);
   }
+  .divider svg.is-flipped { transform: scaleX(-1); }
 </style>
