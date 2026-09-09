@@ -1,6 +1,6 @@
 # Instituto Sânzia Marcela — site
 
-Astro em export estático, publicado na Cloudflare Pages. Sem servidor, sem
+Astro em export estático, publicado na Cloudflare como Worker de assets. Sem servidor, sem
 build no runtime: todo HTML é gerado no deploy e servido do cache de borda.
 
 ## Rodar
@@ -181,16 +181,53 @@ Ocupacional precisa de site acessível. E é argumento de venda com esse públic
 - `FAQPage` por página de categoria, `BreadcrumbList` nas internas
 - Sitemap automático, canonical em toda página, OG para preview no WhatsApp
 
-## Deploy — Cloudflare Pages
+## Deploy — Cloudflare Workers (assets estáticos)
 
 | Campo | Valor |
 |-------|-------|
 | Build command | `npm run build` |
+| Deploy command | `npx wrangler deploy` |
 | Output directory | `dist` |
-| Node version | `22` (variável `NODE_VERSION`) |
+
+A configuração fica em [wrangler.jsonc](wrangler.jsonc) e é um **Worker só de
+assets: não tem `main`**. Isso é deliberado e o arquivo precisa estar
+versionado.
+
+> **Não instale `@astrojs/cloudflare`.** Sem `wrangler.jsonc` no repo, o
+> `wrangler deploy` detecta Astro e roda `astro add cloudflare` **dentro do
+> build**: troca `output: 'static'` por server, passa a exigir um binding KV
+> `SESSION` e arrasta o `node:fs` de `Photo.astro`/`Depoimentos.astro` — que só
+> existe em tempo de build — para o runtime do Worker. O site é estático por
+> decisão de projeto. Com a config presente o wrangler pula esse onboarding.
+
+Antes de publicar, `npm run deploy:dry` valida a config sem subir nada. O que
+importa na saída é o que **não** aparece — nenhuma menção a Astro, adapter ou
+binding:
+
+```
+✨ Read N files from the assets directory .../dist
+Total Upload: 0.31 KiB
+No bindings found.
+```
+
+O upload minúsculo é o esperado: sem `main`, não há bundle de Worker, só o
+manifesto dos assets. Se a saída mencionar `astro add cloudflare`, `mode:
+"server"` ou um binding `SESSION`, o `wrangler.jsonc` não está sendo lido.
+
+Para testar o roteamento igual à produção antes de publicar,
+`npx wrangler dev` (precisa de Node 22+; há um alvo `sanzia-worker` no
+`.claude/launch.json`). Verificado ali: `/cuidado-psicologico` responde 200 sem
+`.html`, `/cuidado-psicologico/` redireciona 307 para a versão sem barra,
+caminho inexistente devolve 404 com o `404.html`, `/_headers` não é servido, e
+as regras de cache saem aplicadas.
 
 `public/_headers` define o cache de borda: assets com hash em `immutable` por um
-ano, HTML com `must-revalidate` para que a publicação apareça na hora.
+ano, HTML com `must-revalidate` para que a publicação apareça na hora. Workers
+static assets lê o `_headers` do diretório de assets (limite de 100 regras; hoje
+são 9) e não o serve publicamente.
+
+Se o deploy falhar com **`code: 971`** e um `Retry-After`, é limite de taxa da
+API da Cloudflare, não erro de config — basta repetir o build.
 
 `build.format: 'file'` + `trailingSlash: 'never'` fazem a URL ser
 `/cuidado-psicologico`, sem barra final e sem `.html`.

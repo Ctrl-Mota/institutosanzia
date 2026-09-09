@@ -22,6 +22,17 @@
         "4330"
       ],
       "port": 4330
+    },
+    {
+      "name": "sanzia-worker",
+      "runtimeExecutable": "/Users/mota/.nvm/versions/node/v22.12.0/bin/node",
+      "runtimeArgs": [
+        "node_modules/wrangler/bin/wrangler.js",
+        "dev",
+        "--port",
+        "4340"
+      ],
+      "port": 4340
     }
   ]
 }
