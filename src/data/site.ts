@@ -13,6 +13,12 @@ export interface SiteConfig {
     country: string;
   };
   phone: { e164: string; wa: string; display: string };
+  /**
+   * Registro no Conselho Regional de Psicologia, ex. 'CRP 05/12345'.
+   * É o sinal de credibilidade que o público espera de psicóloga, e a
+   * divulgação profissional do CFP pede o número. Vazio = não aparece.
+   */
+  crp: string;
   email: string;
   social: { instagram: string };
   openingHours: string[];
@@ -45,6 +51,7 @@ export const site: SiteConfig = {
     display: '(22) 98102-3994',
   },
 
+  crp: '', // TODO(cliente): número do CRP dela
   email: '', // TODO(cliente)
 
   social: {

@@ -27,6 +27,28 @@ Hoje: **15 avisos** — 11 textos de serviço, 1 foto e 3 autorizações de imag
 | 2 | Horário de funcionamento | `src/data/site.ts` → `openingHours` | vazio (formato schema.org) |
 | 3 | E-mail de contato | `src/data/site.ts` → `email` | vazio |
 | 4 | Domínio final | `astro.config.mjs`, `public/robots.txt` | assumido `institutosanzia.com.br`; o Instagram é `institutosanziamarcela` — **confirmar** |
+| 5 | **Número do CRP** | `src/data/site.ts` → `crp` | vazio. É o sinal de credibilidade que o público espera de psicóloga e que a divulgação profissional do CFP pede. Preenchido, aparece no rodapé sozinho. |
+
+### A foto de capa é uma das composições de IA
+
+A capa atual, `public/img/sala-com-brinquedos.jpeg`, é **pixel a pixel idêntica**
+(SSIM 1,000) ao arquivo `-0000038-PHOTO-2026-08-27-12-51-04.jpg` do WhatsApp —
+uma das duas que ela descreveu no áudio de 27/08: *"mandei a foto do espaço e
+pedi o chat para colocar elementos que associassem à psicologia infantil… aí eu
+fui pedir uma de psicomotricidade"*.
+
+Está no ar porque foi escolha deliberada. Mas vale saber que é o oposto do que a
+pesquisa de conversão indica para este nicho: em site de terapeuta, foto
+original do consultório supera imagem genérica de forma consistente — e a capa é
+onde a confiança se ganha ou se perde. Como composição de IA sobre a sala real,
+ela também não corresponde ao que a pessoa encontra ao visitar.
+
+Trocar é uma linha em `src/pages/index.astro`. As reais disponíveis:
+
+| Arquivo | O que é | Proporção |
+|---|---|---|
+| `espaco-sala-vertical.jpg` | sala real, vertical — encaixa direto no hero | 1080×1426 |
+| `atendimento-psicopedagogia.jpg` | mão da criança em atendimento, sem rosto — a mais forte para converter, mas é 16:9 e pediria ajuste no layout do hero | 1599×899 |
 
 Autorização dos depoimentos: **liberada em 08/09**, os três em
 `autorizacao: 'ok'`.

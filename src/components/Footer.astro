@@ -16,6 +16,7 @@ const year = 2026; // build estático: sem data dinâmica no HTML
           <p class="ft__place">{site.address.city}, {site.address.state}</p>
         )
       }
+      {site.crp && <p class="ft__crp">{site.crp}</p>}
     </div>
 
     <nav class="ft__nav" aria-label="Serviços">
@@ -66,6 +67,7 @@ const year = 2026; // build estático: sem data dinâmica no HTML
   .ft__tag { margin-top: var(--sp-2); color: #9fb2c1; max-width: 22rem; }
   .ft__contact { margin-top: var(--sp-4); }
   .ft__place { margin-top: var(--sp-1); color: #9fb2c1; }
+  .ft__crp { margin-top: var(--sp-1); color: #9fb2c1; }
 
   .ft__nav {
     display: grid;

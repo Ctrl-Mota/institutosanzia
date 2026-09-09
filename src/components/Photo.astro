@@ -1,6 +1,7 @@
 ---
 import fs from 'node:fs';
 import path from 'node:path';
+import { imageSize } from '../lib/image-size';
 
 /**
  * Foto do espaço real do Instituto.
@@ -9,21 +10,18 @@ import path from 'node:path';
  * Quando a foto chegar, basta salvar com o nome esperado.
  */
 interface Props {
-  /** nome do arquivo em public/img/ — ex.: 'espaco-recepcao.jpg' */
+  /** nome do arquivo em public/img/ — ex.: 'espaco-sala-1.jpg' */
   src: string;
   alt: string;
-  /** proporção CSS — ex.: '4 / 3' */
+  /**
+   * Proporção CSS. Por padrão vem das dimensões reais do arquivo — só passe
+   * um valor aqui para recortar de propósito.
+   */
   ratio?: string;
   loading?: 'lazy' | 'eager';
   class?: string;
 }
-const {
-  src,
-  alt,
-  ratio = '4 / 3',
-  loading = 'lazy',
-  class: className,
-} = Astro.props;
+const { src, alt, ratio, loading = 'lazy', class: className } = Astro.props;
 
 const abs = path.join(process.cwd(), 'public', 'img', src);
 const exists = fs.existsSync(abs);
@@ -31,6 +29,19 @@ const exists = fs.existsSync(abs);
 if (!exists) {
   console.warn(`[foto ausente] public/img/${src} — "${alt}"`);
 }
+
+// Dimensões lidas do arquivo: alimentam width/height (contra layout shift) e a
+// proporção padrão, para uma foto trocada nunca sair recortada por engano.
+const size = exists ? imageSize(abs) : null;
+if (exists && !size) {
+  console.warn(`[foto ilegível] não consegui ler as dimensões de public/img/${src}`);
+}
+
+const proporcao = ratio ?? (size ? `${size.width} / ${size.height}` : '4 / 3');
+
+// A foto do hero é o maior elemento da primeira dobra — o LCP. A dica de
+// prioridade tira o atraso de descoberta que atrasa a primeira impressão.
+const prioridade = loading === 'eager';
 ---
 {
   exists ? (
@@ -38,14 +49,17 @@ if (!exists) {
       class:list={['photo', className]}
       src={`/img/${src}`}
       alt={alt}
+      width={size?.width}
+      height={size?.height}
       loading={loading}
       decoding="async"
-      style={`aspect-ratio:${ratio}`}
+      fetchpriority={prioridade ? 'high' : undefined}
+      style={`aspect-ratio:${proporcao}`}
     />
   ) : (
     <div
       class:list={['photo photo--todo', className]}
-      style={`aspect-ratio:${ratio}`}
+      style={`aspect-ratio:${proporcao}`}
       role="img"
       aria-label={alt}
     >

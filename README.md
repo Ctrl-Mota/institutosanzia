@@ -79,6 +79,38 @@ Portanto, deliberadamente **ausentes**: popup de saída, contador de urgência,
 - **Copy** — *answer-first*: cada seção abre com a pergunta ("O que é a Terapia
   ABA?") respondida na primeira frase. Bom para o leitor ansioso, bom para
   featured snippet e para citação por LLM.
+
+### A primeira dobra, e por que ela é assim
+
+Estrutura escolhida a partir do que a pesquisa de conversão em saúde
+recomenda, não por gosto:
+
+1. **H1 que nomeia a situação de quem chega**, em voz ativa: *"A gente ajuda
+   você a entender o que seu filho tem e o que fazer agora."* O público é
+   *problem-aware* (percebeu algo no filho) e *solution-unaware* (não sabe se é
+   ABA, psicopedagogia ou avaliação) — nesse estágio afirmação converte melhor
+   que pergunta, e título com desfecho específico bate título de categoria.
+   A versão anterior ("Um lugar para entender o que está acontecendo") descrevia
+   a categoria e não dizia para quem era.
+2. **Frase de apoio que baixa o custo do primeiro contato**, sem inventar
+   gratuidade: *"você conta o que está acontecendo e a gente indica por onde
+   começar, antes de você marcar qualquer coisa."*
+3. **Um CTA dominante.** "Ver os serviços" deixou de ser botão e virou link de
+   texto — dois botões lado a lado dividem o clique. O texto do CTA passou a
+   nomear a ação da pessoa ("Contar o que está acontecendo"), não a nossa.
+4. **Prova social imediatamente abaixo da dobra** (`.prova`): uma citação real
+   de mãe, em texto. Depoimento perto do hero reforça confiança antes da
+   rolagem, e em texto não custa byte.
+5. **Foto real do espaço**, não banco de imagens — em site de terapeuta foto
+   original supera imagem genérica de forma consistente.
+
+O que continua **fora** de propósito: contador, "últimas vagas", popup de saída,
+chat que abre sozinho. O público chega ansioso; pressão aumenta a ansiedade e
+derruba a conversão em vez de subir.
+
+Fica pendente o sinal de credibilidade mais forte que falta: o **número do CRP**
+(`site.crp`). Está vazio e por isso não renderiza; preenchido, aparece no
+rodapé.
 - **CTA** — "Tirar uma dúvida no WhatsApp", nunca "Agende agora". O CTA do
   header saiu no desktop: o botão flutuante está sempre visível e o hero repete
   a mesma ação, então era a terceira cópia.

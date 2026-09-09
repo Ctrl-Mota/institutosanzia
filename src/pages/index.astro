@@ -7,11 +7,13 @@ import Faq from '../components/Faq.astro';
 import Depoimentos from '../components/Depoimentos.astro';
 import ContactBlock from '../components/ContactBlock.astro';
 import { categories } from '../data/services';
+import { depoimentos } from '../data/depoimentos';
 import { site, waLink } from '../data/site';
 
 const pilares = categories.filter((c) => c.slug !== 'cursos-e-eventos');
 const cursos = categories.find((c) => c.slug === 'cursos-e-eventos')!;
 const libras = cursos.services[0]!;
+const primeiroDepoimento = depoimentos[0]!;
 
 const homeFaq = [
   {
@@ -48,36 +50,53 @@ const homeFaq = [
   <section class="hero" aria-labelledby="home-titulo">
     <div class="wrap hero__grid">
       <div class="hero__text">
+        <!-- Título nomeia a situação de quem chega (mãe/pai que percebeu algo)
+             e a saída, em voz ativa. Público problem-aware responde a
+             afirmação, não a pergunta. -->
         <h1 id="home-titulo">
-          Um lugar para entender o que está acontecendo — e o que fazer a partir daí.
+          A gente ajuda você a entender o que seu filho tem e o que fazer agora.
         </h1>
         <p class="lede hero__lede">
-          Psicologia, terapias de desenvolvimento e apoio educacional em
-          {site.address.city}, reunidos em uma equipe que conversa entre si.
-          Você chega com a preocupação; a gente ajuda a organizar o caminho.
+          Psicologia, terapias de desenvolvimento e apoio educacional reunidos
+          em {site.address.city}, numa equipe que conversa entre si. Você conta
+          o que está acontecendo e a gente indica por onde começar, antes de
+          você marcar qualquer coisa.
         </p>
+        <!-- Um CTA dominante. O secundário virou link de texto para não
+             competir pelo clique. -->
         <div class="hero__actions">
           <a class="btn btn--wa" href={waLink('os atendimentos do Instituto')} target="_blank" rel="noopener">
-            Tirar uma dúvida no WhatsApp
+            Contar o que está acontecendo
           </a>
-          <a class="btn btn--ghost" href="#servicos">Ver os serviços</a>
+          <a class="hero__alt" href="#servicos">ou ver os serviços primeiro</a>
         </div>
         <p class="hero__note">
-          Sem compromisso de agendar. Se o caminho não for aqui, a gente diz e
-          orienta para onde ir.
+          Se o caminho não for aqui, a gente diz e orienta para onde ir.
         </p>
       </div>
 
       <div class="hero__media">
         <Photo
-          src="espaco-sala-vertical.jpg"
-          alt="Sala de atendimento do Instituto: aparador de madeira com certificados, uma planta e a mesa de vidro ao lado"
-          ratio="3 / 4"
+          src="sala-com-brinquedos.jpeg"
+          alt="Sala de atendimento do Instituto com a mesa preparada para psicomotricidade: cones, discos de equilíbrio, marcadores de mão e pé, bolas com textura e um rolo colorido"
           loading="eager"
         />
       </div>
     </div>
   </section>
+
+  <!-- Prova social imediatamente abaixo da primeira dobra: reforça confiança
+       antes de a pessoa precisar rolar atrás dela. Texto, não vídeo — não
+       custa byte nenhum. -->
+  <aside class="prova" aria-label="Depoimento de uma mãe atendida">
+    <div class="wrap prova__inner">
+      <blockquote class="prova__quote">{primeiroDepoimento.destaque}</blockquote>
+      <p class="prova__quem">
+        <b>{primeiroDepoimento.quem}</b>, {primeiroDepoimento.contexto}
+        <a class="prova__link" href="#depoimentos">ver os relatos em vídeo</a>
+      </p>
+    </div>
+  </aside>
 
   <!-- ─────────────────────── Os três pilares ─────────────────────── -->
   <section id="servicos" class="pilares section" aria-labelledby="pilares-titulo">
@@ -261,12 +280,45 @@ const homeFaq = [
     gap: var(--sp-4);
     margin-top: var(--sp-6);
   }
+  /* Link de texto, não botão: o CTA principal fica sozinho na hierarquia. */
+  .hero__alt {
+    font-size: 0.9375rem;
+    color: var(--muted);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+  .hero__alt:hover { color: var(--navy); }
+
   .hero__note {
     margin-top: var(--sp-5);
     font-size: 0.9375rem;
     color: var(--muted);
     max-width: 34rem;
   }
+
+  /* ---------------- Prova social sob a primeira dobra ---------------- */
+  .prova {
+    background: var(--white);
+    border-block: 1px solid var(--line);
+    padding-block: clamp(1.5rem, 3vw, 2.25rem);
+  }
+  .prova__inner { max-width: 56rem; }
+  .prova__quote {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: var(--fs-lg);
+    line-height: 1.45;
+    color: var(--navy);
+  }
+  .prova__quote::before { content: '“'; }
+  .prova__quote::after { content: '”'; }
+  .prova__quem {
+    margin-top: var(--sp-3);
+    font-size: 0.9375rem;
+    color: var(--muted);
+  }
+  .prova__quem b { color: var(--navy); font-weight: 600; }
+  .prova__link { margin-left: var(--sp-3); white-space: nowrap; }
   .hero__media :global(.photo) { box-shadow: var(--sh-2); }
 
   /* ---------------- Pilares ---------------- */
