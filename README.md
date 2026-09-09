@@ -165,6 +165,42 @@ Se for preciso reintroduzir rolagem suave, faça por gesto (`scrollTo` no
 handler do clique), nunca global no `html`, e mantenha o observer longe de
 qualquer API que role ancestrais.
 
+### Mapa e avaliações do Google
+
+Os dois vêm do Perfil da Empresa dela, então dividem uma seção
+(`Localizacao.astro`) em vez de competirem por duas.
+
+- **O mapa é fachada com carregamento no clique.** Um iframe do Google numa
+  página onde uma mãe acabou de ler sobre autismo entrega esse contexto de
+  navegação para terceiro antes de a pessoa pedir. Verificado: o carregamento da
+  home faz **zero requisição** para fora do próprio domínio.
+- A URL do iframe fica em `site.google.embedUrl` e vem do painel
+  "Compartilhar → Incorporar um mapa" do Maps, que fixa o marcador do lugar.
+  **Cole ali só a URL**, nunca a tag `<iframe>` inteira — o componente monta a
+  tag; colar a tag quebra o mapa.
+- **Nada de `aggregateRating` no JSON-LD.** As diretrizes do Google dizem que
+  página de LocalBusiness com avaliação que a própria empresa controla (inclusive
+  widget do Google Business) fica inelegível para estrela no resultado, e marcar
+  review de terceiro como conteúdo próprio viola a política. A nota e as citações
+  são conteúdo visível, com link para a origem. Não adicione o schema.
+- As citações em `src/data/avaliacoes.ts` são curadoria manual, com a data da
+  conferência em `site.google.checkedAt` visível na página. Sincronizar de
+  verdade exigiria a Places API (chave + billing) e um passo no build.
+- Uma avaliação do perfil ficou de fora: cita o primeiro nome de uma criança
+  atendida. Mesma regra das legendas dos depoimentos.
+
+### Faixa do curso de Libras
+
+`LibrasBanner.astro`, alimentada por `src/data/turmas.ts`. Fundo em
+`--teal-700`: é o único membro da paleta que ainda não era superfície grande,
+então é novo para o olho sem inventar uma sexta cor — e é o tom das pílulas do
+cartaz que ela mesma fez.
+
+Aparece só na home. Não entra nas três páginas clínicas de propósito: quem está
+lendo sobre avaliação neuropsicológica do filho não deve receber divulgação de
+curso no meio. `inscricoesAbertas: false` apaga a faixa e a seção de inscrição
+de uma vez.
+
 ### Depoimentos em vídeo
 
 Seção "O que as mães contam" na home, alimentada por `src/data/depoimentos.ts`.

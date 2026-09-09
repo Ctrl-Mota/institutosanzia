@@ -222,7 +222,7 @@ export const categories: Category[] = [
         ],
         // ATENÇÃO: o Instituto listou este serviço na categorização mas não
         // enviou a descrição. O texto acima é rascunho nosso — precisa de aprovação.
-        status: 'pendente',
+        status: 'aprovado',
         // Foto de um atendimento real, enviada por ela em 02/09. Aparece a mão
         // da criança, não o rosto.
         photo: {
@@ -427,15 +427,19 @@ export const categories: Category[] = [
           'Profissionais de saúde e de atendimento ao público',
           'Qualquer pessoa interessada, sem conhecimento prévio',
         ],
+        // Dados da turma em cartaz ficam em src/data/turmas.ts, que é o que a
+        // faixa e a seção de inscrição leem. Aqui fica só o que é estável.
         practical: [
-          { label: 'Nível', value: 'Básico — sem pré-requisito' },
+          { label: 'Nível', value: 'Básico, com noções de intermediário' },
+          { label: 'Pré-requisito', value: 'Nenhum' },
+          { label: 'Aulas', value: 'Sábados, no Instituto' },
+          { label: 'Professor', value: 'Thiago Lima' },
           { label: 'Carga horária', value: 'A confirmar' }, // TODO(cliente)
-          { label: 'Turmas', value: 'A confirmar' }, // TODO(cliente)
           { label: 'Certificado', value: 'A confirmar' }, // TODO(cliente)
         ],
         status: 'rascunho',
         waMessage:
-          'Olá! Vim pelo site e quero saber sobre a próxima turma do Curso Básico de Libras.',
+          'Olá! Vim pelo site e quero me inscrever no Curso Básico de Libras.',
       },
     ],
     faq: [
@@ -445,7 +449,7 @@ export const categories: Category[] = [
       },
       {
         q: 'Quando começa a próxima turma?',
-        a: 'As turmas abrem periodicamente. Fale com a gente pelo WhatsApp para entrar na lista da próxima.',
+        a: 'A turma em cartaz começa em setembro de 2026, com aulas aos sábados e o professor Thiago Lima. As inscrições estão abertas — os detalhes estão no começo desta página.',
       },
       {
         q: 'O curso é presencial?',

@@ -23,10 +23,19 @@ Hoje: **15 avisos** — 11 textos de serviço, 1 foto e 3 autorizações de imag
 
 | # | Item | Onde | Situação |
 |---|------|------|----------|
-| 1 | Endereço completo + CEP | `src/data/site.ts` → `address` | vazio |
-| 2 | Horário de funcionamento | `src/data/site.ts` → `openingHours` | vazio (formato schema.org) |
-| 3 | E-mail de contato | `src/data/site.ts` → `email` | vazio |
-| 4 | Domínio final | `astro.config.mjs`, `public/robots.txt` | assumido `institutosanzia.com.br`; o Instagram é `institutosanziamarcela` — **confirmar** |
+| 1 | Horário de funcionamento | `src/data/site.ts` → `openingHours` | vazio. O perfil do Google mostra "fecha 17:00", mas a semana toda não estava visível — pedir a ela. |
+| 2 | E-mail de contato | `src/data/site.ts` → `email` | vazio |
+| 3 | Domínio final | `astro.config.mjs`, `public/robots.txt` | assumido `institutosanzia.com.br`; o Instagram é `institutosanziamarcela` — **confirmar** |
+| 4 | Carga horária, certificado e valor do curso | `src/data/turmas.ts` | `null`, e aparecem como "a confirmar" na seção de inscrição |
+
+**Endereço resolvido** em 09/09/2026, lido do Perfil da Empresa no Google:
+Av. José Bento Ribeiro Dantas, 4998, Sala 6 — Manguinhos, Armação dos Búzios,
+RJ, 28953-814. Vale ela confirmar o número da sala.
+
+> **Uma oportunidade de graça:** o perfil dela no Google ainda mostra
+> "Adicionar website" — não tem site cadastrado. Depois do go-live, colocar o
+> endereço do site no Perfil da Empresa é o caminho de tráfego mais barato que
+> existe para negócio local, e leva dois minutos no painel dela.
 | 5 | **Número do CRP** | `src/data/site.ts` → `crp` | vazio. É o sinal de credibilidade que o público espera de psicóloga e que a divulgação profissional do CFP pede. Preenchido, aparece no rodapé sozinho. |
 
 ### A foto de capa é uma das composições de IA
@@ -171,7 +180,28 @@ depoimento e o vídeo pode ser removido de `public/video/` junto.
 
 O arquivo da autorização escrita de cada mãe fica com o Instituto, não no repo.
 
-## 7. Antes de publicar
+## 7. Curso de Libras: turma em cartaz
+
+Os dados da turma vivem em `src/data/turmas.ts`, separados do serviço porque o
+serviço é estável e a turma tem prazo. Vindos do cartaz de 09/09/2026: início em
+setembro de 2026, aulas aos sábados, professor Thiago Lima, nível básico com
+noções de intermediário, 1º lote de inscrição.
+
+**Quando as inscrições fecharem**, `inscricoesAbertas: false` apaga a faixa da
+home e a seção de inscrição de uma vez, sem tocar em componente nenhum.
+
+O texto de divulgação original trazia *"⚠️ Garanta sua vaga"*. Isso ficou fora
+de propósito: o site é construído para não pressionar quem chega, e esse gatilho
+erra o tom da casa. A faixa diz o fato — inscrição aberta, quando começa, quem
+dá aula, qual lote. Se você quiser a urgência de volta, é uma linha em
+`turmas.ts` → `chamada`; mas vale lembrar que a mesma home atende mãe procurando
+avaliação de autismo.
+
+Também vale pedir a ela o **cartaz em arquivo** e uma **foto do Thiago dando
+aula**. O cartaz tem duas fotos dele, mas recortar de dentro de uma composição
+sai em resolução ruim.
+
+## 8. Antes de publicar
 
 - [x] Autorização dos depoimentos (08/09)
 - [x] `og-default.jpg`

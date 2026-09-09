@@ -6,6 +6,8 @@ import Photo from '../components/Photo.astro';
 import Faq from '../components/Faq.astro';
 import Depoimentos from '../components/Depoimentos.astro';
 import ContactBlock from '../components/ContactBlock.astro';
+import LibrasBanner from '../components/LibrasBanner.astro';
+import Localizacao from '../components/Localizacao.astro';
 import { categories } from '../data/services';
 import { depoimentos } from '../data/depoimentos';
 import { site, waLink } from '../data/site';
@@ -26,7 +28,7 @@ const homeFaq = [
   },
   {
     q: 'Vocês atendem adultos ou só crianças?',
-    a: 'Atendemos as duas coisas. Psicoterapia, avaliação neuropsicológica, arteterapia, orientação profissional e aulas de idiomas atendem adultos.',
+    a: 'Atendemos os dois. Psicoterapia, avaliação neuropsicológica, arteterapia, orientação profissional e aulas de idiomas atendem adultos.',
   },
   {
     q: 'A primeira conversa tem custo?',
@@ -34,7 +36,7 @@ const homeFaq = [
   },
   {
     q: 'Onde o Instituto fica?',
-    a: `Estamos em ${site.address.city} — ${site.address.state}. Pelo WhatsApp enviamos o endereço completo e a melhor forma de chegar.`,
+    a: `${site.address.street}, ${site.address.district}, ${site.address.cityShort}. O endereço completo e a rota estão na seção "Onde ficamos", no fim desta página.`,
   },
 ];
 ---
@@ -58,7 +60,7 @@ const homeFaq = [
         </h1>
         <p class="lede hero__lede">
           Psicologia, terapias de desenvolvimento e apoio educacional reunidos
-          em {site.address.city}, numa equipe que conversa entre si. Você conta
+          em {site.address.cityShort}, numa equipe que conversa entre si. Você conta
           o que está acontecendo e a gente indica por onde começar, antes de
           você marcar qualquer coisa.
         </p>
@@ -97,6 +99,8 @@ const homeFaq = [
       </p>
     </div>
   </aside>
+
+  <LibrasBanner />
 
   <!-- ─────────────────────── Os três pilares ─────────────────────── -->
   <section id="servicos" class="pilares section" aria-labelledby="pilares-titulo">
@@ -145,7 +149,7 @@ const homeFaq = [
             Ver o curso
           </a>
           <a class="btn btn--ghost libras__ghost" href={waLink(libras.name, libras.waMessage)} target="_blank" rel="noopener">
-            Entrar na lista da próxima turma
+            Fazer a inscrição
           </a>
         </div>
       </div>
@@ -251,7 +255,9 @@ const homeFaq = [
 
   <Faq items={homeFaq} title="Perguntas frequentes" />
 
-  <OrganicDivider bg="var(--grey-50)" fill="var(--navy)" />
+  <Localizacao />
+
+  <OrganicDivider bg="var(--grey-25)" fill="var(--navy)" />
 
   <ContactBlock
     origin="os atendimentos do Instituto"

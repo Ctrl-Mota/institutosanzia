@@ -1,0 +1,102 @@
+---
+import { turmaLibras as t } from '../data/turmas';
+import { waLink } from '../data/site';
+
+/**
+ * A turma em cartaz, na página de cursos. É o destino da faixa.
+ *
+ * Os campos que o Instituto ainda não informou (carga horária, certificado,
+ * valor) aparecem como pendência honesta em vez de sumirem: quem está pensando
+ * em se inscrever quer saber, e omitir sem dizer nada é pior que dizer que a
+ * informação vem no WhatsApp.
+ */
+const fatos = [
+  { rotulo: 'Nível', valor: t.nivel },
+  { rotulo: 'Início', valor: t.inicio },
+  { rotulo: 'Aulas', valor: t.aulas },
+  { rotulo: 'Professor', valor: t.professor },
+  { rotulo: 'Local', valor: t.local },
+  { rotulo: 'Carga horária', valor: t.cargaHoraria },
+  { rotulo: 'Certificado', valor: t.certificado },
+  { rotulo: 'Investimento', valor: t.valor ?? `${t.lote} em vigor` },
+];
+
+const mensagem = `Olá! Vim pelo site e quero me inscrever no ${t.curso}, na turma que começa em ${t.inicio.toLowerCase()}.`;
+---
+<section id={t.id} class="turma" aria-labelledby="turma-titulo">
+  <div class="wrap turma__grid">
+    <div class="turma__texto">
+      <h2 id="turma-titulo">{t.chamada}</h2>
+      <p class="lede turma__lede">
+        O {t.curso.toLowerCase()} abre turma nova com {t.professor} dando aula.
+        Aprender Libras é conseguir conversar com pessoas surdas — e, para quem
+        trabalha em educação ou em saúde, é atender melhor.
+      </p>
+      <div class="turma__acoes">
+        <a class="btn btn--wa" href={waLink(t.curso, mensagem)} target="_blank" rel="noopener">
+          Fazer a inscrição no WhatsApp
+        </a>
+      </div>
+      <p class="turma__nota">
+        A inscrição é confirmada pelo WhatsApp. A gente informa o valor do
+        {' '}{t.lote.toLowerCase()} e a forma de pagamento antes de você decidir.
+      </p>
+    </div>
+
+    <dl class="turma__fatos">
+      {
+        fatos.map((f) => (
+          <div class="turma__fato">
+            <dt>{f.rotulo}</dt>
+            <dd class:list={[!f.valor && 'turma__pendente']}>
+              {f.valor ?? 'a confirmar com o Instituto'}
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</section>
+
+<style>
+  .turma {
+    background: var(--white);
+    border-block: 1px solid var(--line);
+    padding-block: var(--section-y);
+  }
+  .turma__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+  .turma__lede { margin-top: var(--sp-4); font-size: 1.0625rem; }
+  .turma__acoes { margin-top: var(--sp-6); }
+  .turma__nota {
+    margin-top: var(--sp-4);
+    font-size: 0.9375rem;
+    color: var(--muted);
+    max-width: 34rem;
+  }
+
+  .turma__fatos { display: grid; margin: 0; }
+  .turma__fato {
+    display: grid;
+    grid-template-columns: minmax(min(8rem, 42%), auto) 1fr;
+    gap: var(--sp-4);
+    padding-block: var(--sp-3);
+    border-bottom: 1px solid var(--line);
+    font-size: 0.9375rem;
+  }
+  .turma__fato:last-child { border-bottom: 0; }
+  .turma__fato dt { font-weight: 600; color: var(--navy); }
+  /* Sem `color` aqui: dd já herda --ink do body, e a declaração redundante
+     ganhava do modificador abaixo (o atributo de escopo do Astro leva o
+     seletor descendente a (0,3,1)). Tirar resolve melhor que escalar. */
+  .turma__fato dd { margin: 0; }
+  .turma__pendente { color: var(--muted); font-style: italic; }
+
+  @media (max-width: 62rem) {
+    .turma__grid { grid-template-columns: 1fr; }
+  }
+</style>

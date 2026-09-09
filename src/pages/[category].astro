@@ -4,6 +4,7 @@ import AnchorNav from '../components/AnchorNav.astro';
 import ServiceSection from '../components/ServiceSection.astro';
 import Faq from '../components/Faq.astro';
 import ContactBlock from '../components/ContactBlock.astro';
+import TurmaAberta from '../components/TurmaAberta.astro';
 import OrganicDivider from '../components/OrganicDivider.astro';
 import { categories } from '../data/services';
 import { site } from '../data/site';
@@ -60,6 +61,8 @@ const breadcrumb = {
   </section>
 
   <AnchorNav services={category.services} />
+
+  {category.slug === 'cursos-e-eventos' && <TurmaAberta />}
 
   {
     category.services.map((service, i) => (

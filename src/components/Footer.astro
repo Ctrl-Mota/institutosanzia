@@ -13,7 +13,7 @@ const year = 2026; // build estático: sem data dinâmica no HTML
       </p>
       {
         site.address.city && (
-          <p class="ft__place">{site.address.city}, {site.address.state}</p>
+          <p class="ft__place">{site.address.cityShort}, {site.address.state}</p>
         )
       }
       {site.crp && <p class="ft__crp">{site.crp}</p>}

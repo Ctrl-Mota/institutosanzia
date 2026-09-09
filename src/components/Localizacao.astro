@@ -1,0 +1,244 @@
+---
+import { site } from '../data/site';
+import { avaliacoes } from '../data/avaliacoes';
+
+/**
+ * Onde ficamos + o que dizem no Google.
+ *
+ * As duas coisas vêm do mesmo lugar (o Perfil da Empresa dela), então dividem
+ * uma seção em vez de competirem por duas.
+ *
+ * O mapa NÃO é um iframe carregado de saída. Um iframe do Google numa página
+ * onde uma mãe acabou de ler sobre autismo entrega esse contexto de navegação
+ * para terceiro antes de a pessoa pedir. Então: fachada estática, e o mapa
+ * interativo carrega no clique — mesma decisão já tomada para os vídeos.
+ *
+ * A nota e as citações são conteúdo visível, sem JSON-LD. Ver avaliacoes.ts.
+ */
+const g = site.google;
+const a = site.address;
+
+const enderecoLinhas = [
+  a.street,
+  `${a.district}, ${a.cityShort} — ${a.state}`,
+  a.postalCode,
+].filter(Boolean);
+
+const notaFormatada = g.rating.toLocaleString('pt-BR', {
+  minimumFractionDigits: 1,
+});
+
+const conferidoEm = new Date(g.checkedAt + 'T12:00:00Z').toLocaleDateString(
+  'pt-BR',
+  { month: 'long', year: 'numeric', timeZone: 'UTC' },
+);
+---
+<section class="loc section" aria-labelledby="loc-titulo">
+  <div class="wrap">
+    <div class="loc__head measure">
+      <h2 id="loc-titulo">Onde ficamos</h2>
+    </div>
+
+    <div class="loc__grid">
+      <!-- Fachada do mapa: só carrega o Google quando a pessoa pede. -->
+      <div class="mapa" data-mapa data-src={g.embedUrl}>
+        <div class="mapa__fachada">
+          <svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true" focusable="false">
+            <path
+              d="M12 2c-3.9 0-7 3.1-7 7 0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <p class="mapa__texto">
+            O mapa vem do Google. Ele carrega quando você quiser.
+          </p>
+          <button type="button" class="btn btn--ghost mapa__btn" data-mapa-btn>
+            Carregar o mapa
+          </button>
+        </div>
+      </div>
+
+      <div class="loc__lado">
+        <address class="endereco">
+          {enderecoLinhas.map((l) => <span>{l}</span>)}
+        </address>
+
+        <p class="loc__acoes">
+          <a class="btn btn--primary" href={g.directionsUrl} target="_blank" rel="noopener">
+            Ver rota no Google Maps
+          </a>
+        </p>
+
+        <div class="nota">
+          <p class="nota__linha">
+            <span class="nota__valor">{notaFormatada}</span>
+            <span class="estrelas" role="img" aria-label={`${notaFormatada} de 5 no Google`}>
+              {
+                [0, 1, 2, 3, 4].map(() => (
+                  <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true" focusable="false">
+                    <path
+                      d="m12 2.6 2.9 6 6.6.9-4.8 4.6 1.2 6.5-5.9-3.2-5.9 3.2 1.2-6.5L2.5 9.5l6.6-.9 2.9-6Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                ))
+              }
+            </span>
+            <span class="nota__volume">{g.reviewCount} avaliações no Google</span>
+          </p>
+
+          <ul class="nota__lista">
+            {
+              avaliacoes.map((av) => (
+                <li class="nota__item">
+                  <blockquote>{av.texto}</blockquote>
+                  <p class="nota__quem">
+                    {av.autor}, {av.quando}
+                  </p>
+                </li>
+              ))
+            }
+          </ul>
+
+          <p class="nota__pe">
+            <a href={g.placeUrl} target="_blank" rel="noopener">
+              Ler as avaliações no Google
+            </a>
+            <span class="nota__data">Números conferidos em {conferidoEm}.</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .loc { background: var(--grey-25); }
+  .loc__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
+    gap: clamp(1.75rem, 4vw, 3.5rem);
+    margin-top: var(--sp-6);
+    align-items: start;
+  }
+
+  /* ---------------- mapa ---------------- */
+  .mapa {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    overflow: hidden;
+    background: var(--grey-100);
+  }
+  .mapa__fachada {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: var(--sp-4);
+    padding: var(--sp-5);
+    text-align: center;
+    color: var(--muted);
+  }
+  .mapa__texto { font-size: 0.9375rem; max-width: 24rem; }
+  .mapa :global(iframe) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  /* ---------------- endereço ---------------- */
+  .endereco {
+    display: grid;
+    gap: var(--sp-1);
+    font-style: normal;
+    font-size: var(--fs-lg);
+    line-height: 1.5;
+    color: var(--navy);
+  }
+  .loc__acoes { margin-top: var(--sp-5); }
+
+  /* ---------------- nota do Google ---------------- */
+  .nota {
+    margin-top: var(--sp-7);
+    padding-top: var(--sp-6);
+    border-top: 1px solid var(--line);
+  }
+  .nota__linha {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--sp-2) var(--sp-3);
+  }
+  .nota__valor {
+    font-family: var(--font-serif);
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1;
+  }
+  .estrelas { display: inline-flex; gap: 2px; color: var(--teal-700); }
+  .nota__volume { font-size: 0.9375rem; color: var(--muted); }
+
+  .nota__lista {
+    list-style: none;
+    margin: var(--sp-5) 0 0;
+    padding: 0;
+    display: grid;
+    gap: var(--sp-5);
+  }
+  .nota__item blockquote {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  .nota__item blockquote::before { content: '“'; }
+  .nota__item blockquote::after { content: '”'; }
+  .nota__quem {
+    margin-top: var(--sp-2);
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+
+  .nota__pe {
+    margin-top: var(--sp-5);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-2) var(--sp-4);
+    align-items: baseline;
+    font-size: 0.875rem;
+  }
+  .nota__data { color: var(--muted); }
+</style>
+
+<script>
+  // Troca a fachada pelo iframe só no clique. Sem clique, nenhuma requisição
+  // sai para o Google.
+  const bloco = document.querySelector<HTMLElement>('[data-mapa]');
+  const botao = document.querySelector<HTMLButtonElement>('[data-mapa-btn]');
+
+  if (bloco && botao) {
+    botao.addEventListener('click', () => {
+      const src = bloco.dataset.src;
+      if (!src) return;
+      const iframe = document.createElement('iframe');
+      iframe.src = src;
+      iframe.title = 'Mapa da localização do Instituto no Google Maps';
+      // `eager`: o iframe só existe porque a pessoa pediu, então adiar a busca
+      // só faria ela esperar olhando um quadro vazio.
+      iframe.loading = 'eager';
+      iframe.referrerPolicy = 'no-referrer-when-downgrade';
+      bloco.replaceChildren(iframe);
+      // O mapa acabou de aparecer no lugar do botão: joga o foco nele para
+      // quem navega por teclado não perder o lugar.
+      iframe.setAttribute('tabindex', '0');
+      iframe.focus();
+    });
+  }
+</script>

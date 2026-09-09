@@ -1,0 +1,102 @@
+---
+import { turmaLibras as t } from '../data/turmas';
+
+/**
+ * Faixa de divulgação da turma em cartaz.
+ *
+ * Fundo em `--teal-700`: é o único membro da paleta que ainda não era
+ * superfície grande, então é novo para o olho sem inventar uma sexta cor — e é
+ * o tom das pílulas do cartaz que ela mesma fez.
+ *
+ * O texto original de divulgação trazia "⚠️ Garanta sua vaga" e "últimas
+ * vagas". Isso ficou fora: o site inteiro é construído para não pressionar
+ * quem chega, e o gatilho de escassez erra o tom da casa. O que converte aqui
+ * é o fato — inscrição aberta, quando começa, quem dá aula, e o lote em vigor.
+ */
+---
+{
+  t.inscricoesAbertas && (
+    <aside class="lb" aria-label={`Divulgação: ${t.curso}`}>
+      <div class="wrap lb__inner">
+        <div class="lb__texto">
+          <p class="lb__chamada">{t.chamada}</p>
+          <ul class="lb__fatos">
+            <li>{t.curso}</li>
+            <li>Início em {t.inicio.toLowerCase()}</li>
+            <li>Aulas aos {t.aulas.toLowerCase()}</li>
+            <li>{t.lote}</li>
+          </ul>
+        </div>
+        <a class="lb__cta" href={`/cursos-e-eventos#${t.id}`}>
+          Ver o curso e se inscrever
+        </a>
+      </div>
+    </aside>
+  )
+}
+
+<style>
+  .lb {
+    background: var(--teal-700);
+    color: #fff;
+    padding-block: var(--sp-4);
+  }
+  .lb__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-4) var(--sp-5);
+  }
+
+  .lb__chamada {
+    font-family: var(--font-serif);
+    font-size: var(--fs-h4);
+    line-height: 1.3;
+  }
+
+  /* Os fatos são uma lista, e a régua vertical entre eles diz isso melhor que
+     um ponto no meio. */
+  .lb__fatos {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: var(--sp-2) 0 0;
+    padding: 0;
+    font-size: 0.9375rem;
+    color: #d8e7eb;
+  }
+  .lb__fatos li + li {
+    margin-left: var(--sp-4);
+    padding-left: var(--sp-4);
+    border-left: 1px solid rgba(255, 255, 255, 0.28);
+  }
+
+  .lb__cta {
+    flex: none;
+    display: inline-block;
+    padding: 0.7rem 1.35rem;
+    border-radius: var(--r-pill);
+    background: #fff;
+    color: var(--teal-700);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    text-decoration: none;
+    transition: background-color 160ms ease, color 160ms ease;
+  }
+  .lb__cta:hover { background: var(--teal-100); color: var(--navy-900); }
+  .lb__cta:active { background: #c6dade; }
+
+  @media (max-width: 40rem) {
+    .lb__fatos li + li {
+      margin-left: 0;
+      padding-left: 0;
+      border-left: 0;
+      flex-basis: 100%;
+      margin-top: var(--sp-1);
+    }
+    /* `width: 100%`, não `align-self: stretch` — num flex de linha o stretch
+       age na altura, então o botão ficava solto à esquerda. */
+    .lb__cta { width: 100%; text-align: center; }
+  }
+</style>
