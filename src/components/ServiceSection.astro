@@ -63,11 +63,11 @@ const alt = index % 2 === 1;
     </div>
 
     <aside class="svc__aside" aria-label={`Informações sobre ${service.name}`}>
-      {
-        service.photo && (
-          <Photo src={service.photo.src} alt={service.photo.alt} ratio="16 / 9" />
-        )
-      }
+      <!-- Sem `ratio` fixo no Photo: as fotos que ela manda vêm em proporções
+           diferentes (a de psicopedagogia é 16:9, a de arteterapia é retrato).
+           O Photo lê a proporção do próprio arquivo, então nenhuma sai
+           recortada. -->
+      {service.photo && <Photo src={service.photo.src} alt={service.photo.alt} />}
       {
         service.forWhom && (
           <div class="panel svc__card">

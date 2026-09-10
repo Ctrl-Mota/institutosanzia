@@ -86,7 +86,7 @@ export const categories: Category[] = [
         ],
         practical: [
           { label: 'Formato', value: 'Sessões individuais' },
-          { label: 'Público', value: 'Crianças, adolescentes e adultos' },
+          { label: 'Público', value: 'Crianças, adolescentes, adultos e idosos' },
           { label: 'Frequência', value: 'Em geral semanal, definida no primeiro encontro' },
         ],
         status: 'rascunho',
@@ -96,22 +96,25 @@ export const categories: Category[] = [
         name: 'Avaliação Neuropsicológica',
         question: 'O que é a avaliação neuropsicológica?',
         answer:
-          'É um processo de investigação, feito em várias sessões, que mapeia como a pessoa está de atenção, memória, linguagem, raciocínio, funções executivas e comportamento — e conclui em um laudo com hipótese diagnóstica e recomendações práticas.',
+          'É um processo de investigação, feito em algumas sessões, normalmente de 8 a 12 encontros, que mapeia como a pessoa está de atenção, memória, linguagem, raciocínio, funções executivas e comportamento — e conclui em um laudo com hipótese diagnóstica e recomendações práticas.',
         body: [
           'A avaliação é indicada quando existe uma dúvida que a consulta comum não resolve: se há um transtorno do neurodesenvolvimento, se a dificuldade escolar tem uma causa cognitiva, se houve perda de função depois de um evento neurológico.',
           'O processo combina entrevista com a família, questionários respondidos pela escola, testes padronizados aplicados individualmente e observação clínica. Ao final há uma devolutiva — um encontro para explicar os resultados em linguagem clara — e o laudo, que serve para escola, plano de saúde, INSS e para orientar o plano terapêutico.',
         ],
         forWhom: [
-          'Suspeita de TDAH, autismo, dislexia ou deficiência intelectual',
+          // "dificuldades de aprendizagem" no lugar de "dislexia" a pedido dela
+          // (09/09): o termo-guarda-chuva cobre desortografia e disgrafia, e
+          // listar cada um "vai até confundir quem está lendo".
+          'Suspeita de TDAH, autismo, dificuldades de aprendizagem ou deficiência intelectual',
           'Dificuldade escolar que não melhora com reforço',
           'Queixa de memória ou atenção em adultos e idosos',
           'Necessidade de laudo para adaptações na escola ou no trabalho',
           'Acompanhamento após AVC, TCE ou outro quadro neurológico',
         ],
         practical: [
-          { label: 'Formato', value: 'Processo em várias sessões + devolutiva' },
+          { label: 'Formato', value: 'De 8 a 12 encontros + devolutiva' },
           { label: 'Entrega', value: 'Laudo neuropsicológico por escrito' },
-          { label: 'Público', value: 'Crianças, adolescentes e adultos' },
+          { label: 'Público', value: 'Crianças, adolescentes, adultos e idosos' },
         ],
         status: 'rascunho',
         waMessage:
@@ -271,9 +274,15 @@ export const categories: Category[] = [
         ],
         practical: [
           { label: 'Formato', value: 'Sessões individuais' },
-          { label: 'Público', value: 'Crianças, adolescentes e adultos' },
+          { label: 'Público', value: 'Crianças, adolescentes, adultos e idosos' },
         ],
         status: 'rascunho',
+        // Foto real que ela mandou em 09/09, legendada "Foto Arteterapia":
+        // mãos adultas separando recortes para colagem. Sem rosto.
+        photo: {
+          src: 'atendimento-arteterapia.jpg',
+          alt: 'Sessão de arteterapia em andamento: mãos separando recortes de revista para uma colagem, ao lado de uma caixa de lápis de cor',
+        },
       },
       {
         id: 'terapia-ocupacional',
@@ -435,7 +444,7 @@ export const categories: Category[] = [
           { label: 'Aulas', value: 'Sábados, no Instituto' },
           { label: 'Professor', value: 'Thiago Lima' },
           { label: 'Carga horária', value: 'A confirmar' }, // TODO(cliente)
-          { label: 'Certificado', value: 'A confirmar' }, // TODO(cliente)
+          { label: 'Certificado', value: 'Sim' }, // confirmado por ela em 09/09
         ],
         status: 'rascunho',
         waMessage:

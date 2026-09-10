@@ -70,8 +70,19 @@ export const site: SiteConfig = {
   },
 
   google: {
+    // Limpo em 09/09. A versão anterior carregava `sa=X`, `ved=` e `ictx=` —
+    // parâmetros da sessão de quem copiou o link, que não têm o que fazer no
+    // HTML do site — e o primeiro identificador do lugar zerado (`0x0:`).
+    // Aqui vai o identificador completo e nada de sessão; verificado no
+    // navegador, resolve na ficha certa.
+    //
+    // Ela relatou em 09/09 que o link "não abriu na página do Instituto" e ela
+    // mesma deu a pista: "não sei se é porque a conta empresa é minha, está no
+    // meu celular". Isso é o Google mandando a proprietária para a visão de
+    // gerenciamento do perfil, não defeito do link. Para conferir como
+    // visitante, abrir numa janela anônima.
     placeUrl:
-      'https://google.com/maps/place/Instituto+Sânzia+Marcela+-+Psicologia+e+Educação+Integrada/data=!4m2!3m1!1s0x0:0x139a4fde2ec6a139?sa=X&ved=1t:2428&ictx=111',
+      'https://www.google.com/maps/place/Instituto+S%C3%A2nzia+Marcela+-+Psicologia+e+Educa%C3%A7%C3%A3o+Integrada/data=!4m2!3m1!1s0x9655ffeb3a77e3:0x139a4fde2ec6a139',
     directionsUrl:
       'https://www.google.com/maps/dir/?api=1&destination=-22.7744549%2C-41.9208245',
     // O painel do Google devolveu com `pt-PT`; trocado para `pt-BR`, que é a

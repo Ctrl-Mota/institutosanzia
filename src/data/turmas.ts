@@ -6,7 +6,14 @@
  * inscrições fecharem, `inscricoesAbertas: false` apaga a faixa do site
  * inteiro sem mexer em nenhum componente.
  *
- * Fonte: cartaz e texto de divulgação enviados pelo Instituto em 09/09/2026.
+ * Fonte: cartaz e texto de divulgação que o Instituto mandou em 20/08/2026
+ * (chegaram até aqui em 09/09).
+ *
+ * ATENÇÃO na data de início. O cartaz diz "Setembro / 2026", mas ela escreveu
+ * **12/09** duas vezes no WhatsApp: "Sobre o curso de Libras que inicia 12/09"
+ * (20/08) e "Início das aulas - 12/09" (25/08). O campo abaixo está no genérico
+ * do cartaz porque publicar a data específica errada é pior que publicar a
+ * vaga — confirmar com ela e trocar para "12 de setembro de 2026".
  */
 export interface Turma {
   /** âncora na página de cursos */
@@ -40,6 +47,6 @@ export const turmaLibras: Turma = {
   inscricoesAbertas: true,
   chamada: 'Inscrições abertas para a turma de setembro',
   cargaHoraria: null,
-  certificado: null,
+  certificado: 'Sim', // ela confirmou em 09/09; carga horária do certificado segue em aberto
   valor: null,
 };
