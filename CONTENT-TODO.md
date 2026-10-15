@@ -12,7 +12,7 @@ Hoje: **15 avisos** — 11 textos de serviço, 1 foto e 3 autorizações de imag
 - [x] **Instagram** → `@institutosanziamarcela`, entra no `sameAs` do schema
 - [x] **Iniciais maiúsculas** → as 4 categorias em Title Case. O print do menu
       tinha um ponto verde na segunda palavra de cada item: "psicológico",
-      "terapias", "educacional", "eventos". Era isso mesmo.
+      "terapias", "educacional", "eventos". Era isso mesmo.institutosanziamarcela
 - [x] **Paleta** → azul, cinza, preto e branco. No áudio de 01/09: *"esse
       amarelinho, se conseguir deixar azul, cinza, preto e branco, pra ficar
       mais na tabela do Instituto mesmo"*. O neutro quente (areia) saiu.

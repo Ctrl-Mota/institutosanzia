@@ -24,7 +24,7 @@ export interface SiteConfig {
     /**
      * URL do iframe, copiada do painel "Compartilhar → Incorporar um mapa" do
      * Maps. Fixa o marcador do lugar, o que a forma `?q=coordenadas` não faz.
-     * Aqui vai só a URL — o `<iframe>` em volta é montado pelo componente no
+     * Aqui vai institutosanziamarcelaiframe>` em volta é montado pelo componente no
      * clique, e colar a tag inteira aqui quebra o mapa.
      */
     embedUrl: string;

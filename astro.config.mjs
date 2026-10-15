@@ -3,7 +3,7 @@ import sitemap from '@astrojs/sitemap';
 
 // Export estático puro -> Cloudflare Pages (cache de borda em todo o HTML/asset)
 export default defineConfig({
-  site: 'https://institutosanzia.com.br',
+  site: 'https://institutosanziamarcela.com.br',
   output: 'static',
   trailingSlash: 'never',
   server: {

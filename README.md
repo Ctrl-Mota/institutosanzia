@@ -116,7 +116,7 @@ rodapé.
   a mesma ação, então era a terceira cópia.
 
 ### O que foi deliberadamente removido
-
+institutosanziamarcela
 Uma passada com a skill `frontend-design` mostrou que a primeira versão gastava
 escolhas livres nos padrões mais reconhecíveis de página gerada. O briefing
 manda no que ele fixou (areia, serifada, curvas, cantos, sombras suaves); o
