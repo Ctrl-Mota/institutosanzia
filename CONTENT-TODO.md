@@ -142,12 +142,13 @@ recorte fechado. Um serviço pode receber uma em
 
 **Não usar** foto de estoque nem composição de IA.
 
-Ícones de marca, que dependem do logo em vetor:
+Os ícones do site foram gerados a partir de `public/icon.png`.
 
 | Arquivo | Uso |
 |---------|-----|
-| `public/favicon.svg` | provisório, feito a partir do "S" — trocar pelo logo real |
-| `public/apple-touch-icon.png` | 180×180; a tag no `<head>` só volta quando o arquivo existir |
+| `public/favicon.png` | 64×64 para a aba do navegador |
+| `public/apple-touch-icon.png` | 180×180 para a tela inicial do iOS |
+| `public/icon-192.png` e `public/icon-512.png` | ícones declarados no manifesto do site |
 
 ## 6. Depoimentos — no ar, mas com pendência jurídica
 
