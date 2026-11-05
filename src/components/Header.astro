@@ -19,12 +19,7 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 <header class="hdr no-print">
   <div class="wrap hdr__inner">
     <a class="brand" href="/">
-      <span class="brand__mark" aria-hidden="true">
-        <svg viewBox="0 0 40 40" width="40" height="40" focusable="false">
-          <path d="M20 3c9.4 0 17 7.6 17 17s-7.6 17-17 17S3 29.4 3 20c0-6 4-8.5 8.5-9.8C16 9 14.5 3 20 3Z" fill="var(--teal)" opacity=".18"/>
-          <path d="M27.5 13.5c-3.6-2.6-8.2-1.4-9.6 1.9-1.5 3.5 2.6 5 4.6 6.2 2 1.2 3 3.6.6 5.3-2.3 1.6-6 .9-8.1-1" fill="none" stroke="var(--navy)" stroke-width="2.6" stroke-linecap="round"/>
-        </svg>
-      </span>
+      <img class="brand__mark" src="/icon-192.png" width="40" height="40" alt="" />
       <span class="brand__text">
         <strong>{site.name}</strong>
         <small>{site.tagline}</small>
@@ -121,7 +116,7 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
     flex: 0 0 auto;
     min-width: 0;
   }
-  .brand__mark { flex: none; }
+  .brand__mark { flex: none; border-radius: var(--r-sm); }
   .brand__text { display: flex; flex-direction: column; line-height: 1.2; min-width: 0; }
   .brand__text strong {
     font-family: var(--font-serif);
