@@ -11,24 +11,24 @@ import { turmaLibras as t } from '../data/turmas';
  * O texto original de divulgação trazia "⚠️ Garanta sua vaga" e "últimas
  * vagas". Isso ficou fora: o site inteiro é construído para não pressionar
  * quem chega, e o gatilho de escassez erra o tom da casa. O que converte aqui
- * é o fato — inscrição aberta, quando começa, quem dá aula, e o lote em vigor.
+ * é a programação informada pelo Instituto, com a data apresentada como previsão.
  */
 ---
 {
-  t.inscricoesAbertas && (
+  t.divulgacaoAtiva && (
     <aside class="lb" aria-label={`Divulgação: ${t.curso}`}>
       <div class="wrap lb__inner">
         <div class="lb__texto">
           <p class="lb__chamada">{t.chamada}</p>
           <ul class="lb__fatos">
             <li>{t.curso}</li>
-            <li>Início em {t.inicio.toLowerCase()}</li>
-            <li>Aulas aos {t.aulas.toLowerCase()}</li>
-            <li>{t.lote}</li>
+            <li>Início previsto em {t.inicio}</li>
+            <li>Aulas no {t.aulas.toLowerCase()}</li>
+            {t.lote && <li>{t.lote}</li>}
           </ul>
         </div>
         <a class="lb__cta" href={`/cursos-e-eventos#${t.id}`}>
-          Ver o curso e se inscrever
+          {t.inscricoesAbertas ? 'Ver o curso e se inscrever' : 'Consultar a próxima turma'}
         </a>
       </div>
     </aside>

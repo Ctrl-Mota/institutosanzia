@@ -67,7 +67,12 @@ const alt = index % 2 === 1;
            diferentes (a de psicopedagogia é 16:9, a de arteterapia é retrato).
            O Photo lê a proporção do próprio arquivo, então nenhuma sai
            recortada. -->
-      {service.photo && <Photo src={service.photo.src} alt={service.photo.alt} />}
+      {service.photo && (
+        <figure class="svc__photo">
+          <Photo src={service.photo.src} alt={service.photo.alt} />
+          {service.photo.caption && <figcaption>{service.photo.caption}</figcaption>}
+        </figure>
+      )}
       {
         service.forWhom && (
           <div class="panel svc__card">
@@ -133,6 +138,12 @@ const alt = index % 2 === 1;
   .svc__cta { margin-top: var(--sp-6); }
 
   .svc__aside { display: grid; gap: var(--sp-5); }
+  .svc__photo { margin: 0; }
+  .svc__photo figcaption {
+    margin-top: var(--sp-2);
+    color: var(--muted);
+    font-size: 0.8125rem;
+  }
   .svc__cardTitle {
     font-size: 1.0625rem;
     margin-bottom: var(--sp-4);

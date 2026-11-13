@@ -19,14 +19,14 @@ Requer Node 22+ (`nvm use 22`).
 
 | Rota | Conteúdo |
 |------|----------|
-| `/` | Porta de entrada: os 3 pilares + curso de Libras, redireciona para as internas |
+| `/` | Porta de entrada com os 3 pilares, curso de Libras e Café com Prosa para Mulheres |
 | `/cuidado-psicologico` | Psicologia Clínica, Avaliação Neuropsicológica, Orientação Profissional |
 | `/desenvolvimento-e-terapias` | Terapia ABA, Psicopedagogia, Psicomotricidade, Arteterapia, Terapia Ocupacional |
 | `/apoio-educacional` | Reforço Escolar, Inglês e Italiano |
-| `/cursos-e-eventos` | Curso Básico de Libras |
+| `/cursos-e-eventos` | Curso Introdutório de Libras e Café com Prosa para Mulheres |
 
 Cada serviço é uma seção com âncora própria dentro da página da categoria —
-`/desenvolvimento-e-terapias#terapia-aba`. Isso dá **11 serviços endereçáveis**
+`/desenvolvimento-e-terapias#terapia-aba`. Isso dá **12 serviços endereçáveis**
 (link direto divulgável no Instagram, cada um com o seu `Service` no JSON-LD) ao
 custo de renderizar 4 páginas.
 
@@ -198,8 +198,10 @@ cartaz que ela mesma fez.
 
 Aparece só na home. Não entra nas três páginas clínicas de propósito: quem está
 lendo sobre avaliação neuropsicológica do filho não deve receber divulgação de
-curso no meio. `inscricoesAbertas: false` apaga a faixa e a seção de inscrição
-de uma vez.
+curso no meio. `divulgacaoAtiva: false` oculta a faixa e os detalhes da próxima
+turma. `inscricoesAbertas` controla as chamadas de inscrição ou de consulta
+pelo WhatsApp. O Café com Prosa usa `src/data/eventos.ts` para compartilhar a
+programação entre a home, a página de Cursos e Eventos e o FAQ.
 
 ### Depoimentos em vídeo
 

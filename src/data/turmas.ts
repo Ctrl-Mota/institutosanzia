@@ -2,34 +2,31 @@
  * Turma em cartaz do Curso de Libras.
  *
  * Fica separada do serviço porque é informação com prazo: o serviço
- * ("o que você aprende") é estável, a turma muda a cada lote. Quando as
- * inscrições fecharem, `inscricoesAbertas: false` apaga a faixa do site
- * inteiro sem mexer em nenhum componente.
+ * ("o que você aprende") é estável, a turma muda a cada divulgação.
+ * `divulgacaoAtiva` controla a faixa e os detalhes da próxima turma.
+ * `inscricoesAbertas` controla as chamadas de inscrição ou de consulta.
  *
- * Fonte: cartaz e texto de divulgação que o Instituto mandou em 20/08/2026
- * (chegaram até aqui em 09/09).
- *
- * ATENÇÃO na data de início. O cartaz diz "Setembro / 2026", mas ela escreveu
- * **12/09** duas vezes no WhatsApp: "Sobre o curso de Libras que inicia 12/09"
- * (20/08) e "Início das aulas - 12/09" (25/08). O campo abaixo está no genérico
- * do cartaz porque publicar a data específica errada é pior que publicar a
- * vaga — confirmar com ela e trocar para "12 de setembro de 2026".
+ * Fonte: WhatsApp de 12/11/2026, às 09:03 e 09:08, e print das 09:08.
+ * O ano de 2027 e a divulgação por consulta foram confirmados por Lucas.
+ * A data de início continua sendo uma previsão.
  */
 export interface Turma {
   /** âncora na página de cursos */
   id: string;
   curso: string;
   nivel: string;
+  /** Data prevista de início, escrita por extenso. */
   inicio: string;
   aulas: string;
   professor: string;
   local: string;
   /** lote de inscrição em vigor */
-  lote: string;
+  lote: string | null;
+  divulgacaoAtiva: boolean;
   inscricoesAbertas: boolean;
   /** Frase curta da faixa. Fato, não pressão. */
   chamada: string;
-  /** Ainda não informados pelo Instituto (ver CONTENT-TODO.md). */
+  /** null indica informação ainda não fornecida pelo Instituto. */
   cargaHoraria: string | null;
   certificado: string | null;
   valor: string | null;
@@ -37,16 +34,21 @@ export interface Turma {
 
 export const turmaLibras: Turma = {
   id: 'inscricoes',
-  curso: 'Curso Básico de Libras',
-  nivel: 'Básico, com noções de intermediário',
-  inicio: 'Setembro de 2026',
-  aulas: 'Sábados',
-  professor: 'Thiago Lima',
+  curso: 'Curso Introdutório de Libras',
+  nivel: 'Básico',
+  inicio: '6 de março de 2027',
+  aulas: '1º e 3º sábado do mês',
+  professor: 'Thiago Santana',
   local: 'No Instituto, em Búzios',
-  lote: '1º lote',
-  inscricoesAbertas: true,
-  chamada: 'Inscrições abertas para a turma de setembro',
+  lote: null,
+  divulgacaoAtiva: true,
+  inscricoesAbertas: false,
+  chamada: 'Próxima turma de Libras',
   cargaHoraria: null,
   certificado: 'Sim', // ela confirmou em 09/09; carga horária do certificado segue em aberto
   valor: null,
 };
+
+export const mensagemLibras = turmaLibras.inscricoesAbertas
+  ? `Olá! Vim pelo site e quero me inscrever no ${turmaLibras.curso}, com início previsto em ${turmaLibras.inicio}.`
+  : `Olá! Vim pelo site e quero saber mais sobre o ${turmaLibras.curso}, com início previsto em ${turmaLibras.inicio}.`;

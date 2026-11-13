@@ -6,6 +6,9 @@
  *   'rascunho' -> redação nossa, aguardando revisão do Instituto.
  *   'pendente'  -> não há texto; serviço aparece com aviso no build (ver CONTENT-TODO.md).
  */
+import { turmaLibras, mensagemLibras } from './turmas';
+import { cafeComProsa, mensagemCafe } from './eventos';
+
 export type ConteudoStatus = 'aprovado' | 'rascunho' | 'pendente';
 
 export interface Service {
@@ -23,8 +26,8 @@ export interface Service {
   /** Informação prática: duração, formato, quem atende. */
   practical?: { label: string; value: string }[];
   status: ConteudoStatus;
-  /** Foto de um atendimento real. Arquivo em public/img/. */
-  photo?: { src: string; alt: string };
+  /** Imagem em public/img/. Ilustrações de IA devem trazer uma legenda. */
+  photo?: { src: string; alt: string; caption?: string };
   /** Sobrescreve a mensagem do WhatsApp da seção. */
   waMessage?: string;
 }
@@ -413,17 +416,22 @@ export const categories: Category[] = [
     slug: 'cursos-e-eventos',
     navLabel: 'Cursos e Eventos',
     title: 'Cursos e Eventos',
-    metaTitle: 'Curso Básico de Libras',
+    metaTitle: `${turmaLibras.curso} e ${cafeComProsa.nome}`,
     metaDescription:
-      'Curso Básico de Libras no Instituto Sânzia Marcela: comunicação em Língua Brasileira de Sinais desde a primeira aula, com prática desde o começo.',
-    promise: 'Formação aberta à comunidade, começando pela língua que aproxima.',
+      `${turmaLibras.curso}, nível ${turmaLibras.nivel.toLowerCase()}, com início previsto em ${turmaLibras.inicio}, e ${cafeComProsa.nome}, com encontros mensais.`,
+    promise: 'Aprendizado e encontros para a comunidade.',
     heroSupport:
-      'Cursos e encontros abertos ao público. A programação atual traz o Curso Básico de Libras.',
+      `Conheça o ${turmaLibras.curso} e o projeto ${cafeComProsa.nome}. Consulte o Instituto pelo WhatsApp para saber mais sobre a programação.`,
     services: [
       {
         id: 'curso-libras',
-        name: 'Curso Básico de Libras',
-        question: 'O que você aprende no Curso Básico de Libras?',
+        name: turmaLibras.curso,
+        photo: {
+          src: 'curso-libras-ilustracao-ia.jpg',
+          alt: 'Cena ilustrativa gerada por IA de adultos praticando comunicação com as mãos em uma aula de Libras',
+          caption: 'Imagem ilustrativa gerada por IA.',
+        },
+        question: `O que você aprende no ${turmaLibras.curso}?`,
         answer:
           'Você aprende a se comunicar em Libras nas situações do dia a dia — se apresentar, perguntar, responder, falar de família, trabalho e rotina — junto com a base gramatical da língua e a cultura surda.',
         body: [
@@ -436,19 +444,35 @@ export const categories: Category[] = [
           'Profissionais de saúde e de atendimento ao público',
           'Qualquer pessoa interessada, sem conhecimento prévio',
         ],
-        // Dados da turma em cartaz ficam em src/data/turmas.ts, que é o que a
-        // faixa e a seção de inscrição leem. Aqui fica só o que é estável.
+        // Os mesmos dados alimentam a faixa, os detalhes da turma e o FAQ.
         practical: [
-          { label: 'Nível', value: 'Básico, com noções de intermediário' },
+          { label: 'Nível', value: turmaLibras.nivel },
           { label: 'Pré-requisito', value: 'Nenhum' },
-          { label: 'Aulas', value: 'Sábados, no Instituto' },
-          { label: 'Professor', value: 'Thiago Lima' },
-          { label: 'Carga horária', value: 'A confirmar' }, // TODO(cliente)
-          { label: 'Certificado', value: 'Sim' }, // confirmado por ela em 09/09
+          { label: 'Início previsto', value: turmaLibras.inicio },
+          { label: 'Aulas', value: turmaLibras.aulas },
+          { label: 'Professor', value: turmaLibras.professor },
+          { label: 'Local', value: turmaLibras.local },
+          { label: 'Carga horária', value: turmaLibras.cargaHoraria ?? 'A confirmar' },
+          { label: 'Certificado', value: turmaLibras.certificado ?? 'A confirmar' },
+          { label: 'Investimento', value: turmaLibras.valor ?? 'A confirmar' },
         ],
         status: 'rascunho',
-        waMessage:
-          'Olá! Vim pelo site e quero me inscrever no Curso Básico de Libras.',
+        waMessage: mensagemLibras,
+      },
+      {
+        id: cafeComProsa.id,
+        name: cafeComProsa.nome,
+        question: `Como funciona o ${cafeComProsa.nome}?`,
+        answer: cafeComProsa.descricao,
+        photo: cafeComProsa.photo,
+        practical: [
+          { label: 'Encontros', value: cafeComProsa.frequencia },
+          { label: 'Horário', value: cafeComProsa.horario },
+          { label: 'Valor', value: cafeComProsa.valor },
+          { label: 'Retorno previsto', value: cafeComProsa.retornoPrevisto },
+        ],
+        status: 'aprovado',
+        waMessage: mensagemCafe,
       },
     ],
     faq: [
@@ -458,11 +482,19 @@ export const categories: Category[] = [
       },
       {
         q: 'Quando começa a próxima turma?',
-        a: 'A turma em cartaz começa em setembro de 2026, com aulas aos sábados e o professor Thiago Lima. As inscrições estão abertas — os detalhes estão no começo desta página.',
+        a: `O início está previsto para ${turmaLibras.inicio}, com aulas no ${turmaLibras.aulas.toLowerCase()} e o professor ${turmaLibras.professor}. Consulte o Instituto pelo WhatsApp para saber mais sobre a turma.`,
       },
       {
         q: 'O curso é presencial?',
         a: 'Sim, presencial no Instituto — Libras é uma língua visual e a prática presencial faz diferença no aprendizado.',
+      },
+      {
+        q: `Quando acontece o ${cafeComProsa.nome}?`,
+        a: `Os encontros acontecem no ${cafeComProsa.frequencia.toLowerCase()}, às ${cafeComProsa.horario}. O retorno está previsto para ${cafeComProsa.retornoPrevisto}.`,
+      },
+      {
+        q: `Qual é o valor do ${cafeComProsa.nome}?`,
+        a: `O valor informado pelo Instituto é de ${cafeComProsa.valor}. Consulte pelo WhatsApp para saber mais sobre a participação.`,
       },
     ],
   },

@@ -87,9 +87,9 @@ na lista de serviços que ela enviou. Saiu do portfólio?
 
 ## 4. Dados do Curso de Libras
 
-Em `services.ts` → `cursos-e-eventos#curso-libras` → `practical`, tudo
-`'A confirmar'`: carga horária, datas das turmas, certificado. Falta também
-valor e forma de pagamento.
+Em `turmas.ts`, continuam pendentes a carga horária, o valor e a forma de
+pagamento. O certificado foi confirmado em 09/09. A programação foi atualizada
+com os pedidos de 12/11/2026, incluindo o início previsto em 6 de março de 2027.
 
 ## 5. Fotografia
 
@@ -111,16 +111,27 @@ qlmanage -t -s 1200 -o /tmp src/assets/og-default.svg
 ffmpeg -y -i /tmp/og-default.svg.png -vf "crop=1200:630:0:0" -q:v 2 public/img/og-default.jpg
 ```
 
-### Foto de turma de Libras: não existe mais esse slot
+### Imagens ilustrativas de Libras e do Café com Prosa
 
-O bloco do Curso de Libras na home tinha um placeholder de foto de turma. Foto de
-aula de Libras exige rosto e mão de aluno real, com autorização de cada um — e
-uma imagem genérica pesaria contra justamente nesse bloco, que é o momento mais
-forte da página. O espaço passou a carregar **informação**: o painel "Para quem
-é", alimentado por `services.ts` → `curso-libras.forWhom`.
+Lucas pediu fotos ilustrativas de IA em 13/11/2026. As duas imagens foram
+geradas com a ferramenta integrada `imagegen`, otimizadas em JPEG de 1200×800
+e incluídas na home e na página de Cursos e Eventos, com a legenda
+"Imagem ilustrativa gerada por IA." e texto alternativo equivalente.
 
-Se ela mandar uma foto real de turma (com autorização), vale reavaliar; hoje o
-bloco não depende de foto nenhuma.
+| Arquivo | Conteúdo |
+|---------|----------|
+| `public/img/curso-libras-ilustracao-ia.jpg` | Adultos praticando comunicação visual em uma aula fictícia de Libras |
+| `public/img/cafe-com-prosa-ilustracao-ia.jpg` | Mulheres conversando em uma mesa de café, em uma cena fictícia |
+
+Prompts utilizados na geração das imagens.
+
+**Libras**
+
+Use case: photorealistic-natural. Asset type: imagem ilustrativa para o Curso Introdutório de Libras no site do Instituto Sânzia Marcela. Criar uma fotografia editorial horizontal, proporção 3:2, de uma pequena aula de Libras para adultos em um ambiente educativo acolhedor. Três adultos brasileiros com diversidade de tons de pele e idades em torno de uma mesa, praticando comunicação visual com as mãos, expressões atentas e espontâneas. Enquadramento de meio corpo que permita ver os rostos e as mãos, anatomia natural e mãos coerentes. Luz natural suave, madeira clara, detalhes azul-marinho, branco e cinza, fundo simples, textura fotográfica realista. Mostrar uma situação genérica de aprendizagem, sem representar um sinal específico como instrução didática. Personagens e local fictícios, sem nomes, letras, cartazes legíveis, marcas, logotipos ou marca d'água. A imagem receberá no site uma legenda identificando que foi gerada por IA.
+
+**Café**
+
+Use case: photorealistic-natural. Asset type: imagem ilustrativa para o projeto Café com Prosa para Mulheres no site do Instituto Sânzia Marcela. Criar uma fotografia editorial horizontal, proporção 3:2, de quatro mulheres brasileiras adultas de idades e tons de pele diversos, reunidas em uma pequena mesa de café, conversando e ouvindo umas às outras com expressões naturais e acolhedoras. Xícaras de cerâmica e café na mesa, ambiente comunitário simples e confortável, luz natural suave. Enquadramento de meio corpo, rostos e mãos naturais, sem pose de campanha publicitária. Madeira clara, tons neutros, roupas azul-marinho, azul acinzentado e branco, composição fotográfica com texturas reais. Personagens e ambiente fictícios. Sem associar a cena a terapia ou a pacientes, sem crianças, sem nomes, letras, logotipos, cartazes legíveis ou marca d'água. A imagem receberá no site uma legenda identificando que foi gerada por IA.
 
 ### Duas fotos NÃO usadas, de propósito
 
@@ -140,7 +151,9 @@ Se quiser mais fotos "em ação" nesse formato, é o caminho: mão, material,
 recorte fechado. Um serviço pode receber uma em
 `services.ts` → `photo: { src, alt }`.
 
-**Não usar** foto de estoque nem composição de IA.
+As ilustrações de Libras e do Café com Prosa foram autorizadas por Lucas em
+13/11/2026 e recebem identificação visível. As imagens dos atendimentos e do
+espaço seguem documentadas acima.
 
 Os ícones do site foram gerados a partir de `public/icon.png`.
 
@@ -183,24 +196,21 @@ O arquivo da autorização escrita de cada mãe fica com o Instituto, não no re
 
 ## 7. Curso de Libras: turma em cartaz
 
-Os dados da turma vivem em `src/data/turmas.ts`, separados do serviço porque o
-serviço é estável e a turma tem prazo. Vindos do cartaz de 09/09/2026: início em
-setembro de 2026, aulas aos sábados, professor Thiago Lima, nível básico com
-noções de intermediário, 1º lote de inscrição.
+Os dados da turma vivem em `src/data/turmas.ts` e alimentam a faixa da home,
+os detalhes, as informações práticas, o FAQ e as mensagens do WhatsApp.
+Fonte atualizada com as mensagens de 12/11/2026, às 09:03 e 09:08, e o print
+das 09:08. O Curso Introdutório de Libras é de nível básico, com Thiago Santana,
+aulas no 1º e 3º sábado do mês e início previsto em 6 de março de 2027.
+Lucas confirmou o ano de 2027 e a divulgação para consulta pelo WhatsApp.
 
-**Quando as inscrições fecharem**, `inscricoesAbertas: false` apaga a faixa da
-home e a seção de inscrição de uma vez, sem tocar em componente nenhum.
+`divulgacaoAtiva: false` oculta a faixa e os detalhes da próxima turma.
+`inscricoesAbertas: false` mantém as chamadas para consulta, com a programação
+visível enquanto a divulgação estiver ativa. O lote atual é `null`.
 
-O texto de divulgação original trazia *"⚠️ Garanta sua vaga"*. Isso ficou fora
-de propósito: o site é construído para não pressionar quem chega, e esse gatilho
-erra o tom da casa. A faixa diz o fato — inscrição aberta, quando começa, quem
-dá aula, qual lote. Se você quiser a urgência de volta, é uma linha em
-`turmas.ts` → `chamada`; mas vale lembrar que a mesma home atende mãe procurando
-avaliação de autismo.
-
-Também vale pedir a ela o **cartaz em arquivo** e uma **foto do Thiago dando
-aula**. O cartaz tem duas fotos dele, mas recortar de dentro de uma composição
-sai em resolução ruim.
+O Café com Prosa para Mulheres usa os dados de `src/data/eventos.ts`, também
+compartilhados pela home, detalhes e FAQ. A mensagem de 12/11/2026, às 09:06,
+informa encontros no segundo sábado de cada mês, às 10h, valor de R$ 25,00
+e retorno previsto em 13 de fevereiro de 2027, com o ano confirmado por Lucas.
 
 ## 8. Antes de publicar
 

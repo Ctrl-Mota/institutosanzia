@@ -9,12 +9,14 @@ import ContactBlock from '../components/ContactBlock.astro';
 import LibrasBanner from '../components/LibrasBanner.astro';
 import Localizacao from '../components/Localizacao.astro';
 import { categories } from '../data/services';
+import { turmaLibras } from '../data/turmas';
+import { cafeComProsa, mensagemCafe } from '../data/eventos';
 import { depoimentos } from '../data/depoimentos';
 import { site, waLink } from '../data/site';
 
 const pilares = categories.filter((c) => c.slug !== 'cursos-e-eventos');
 const cursos = categories.find((c) => c.slug === 'cursos-e-eventos')!;
-const libras = cursos.services[0]!;
+const libras = cursos.services.find((service) => service.id === 'curso-libras')!;
 const primeiroDepoimento = depoimentos[0]!;
 
 const homeFaq = [
@@ -161,15 +163,17 @@ const homeFaq = [
             Ver o curso
           </a>
           <a class="btn btn--ghost libras__ghost" href={waLink(libras.name, libras.waMessage)} target="_blank" rel="noopener">
-            Fazer a inscrição
+            {turmaLibras.inscricoesAbertas ? 'Fazer a inscrição' : 'Consultar a próxima turma'}
           </a>
         </div>
       </div>
-      <!-- Aqui havia um placeholder de foto de turma. Foto de aula de Libras
-           precisa de rosto e mão de aluno real, com autorização — e uma imagem
-           genérica pesaria contra justamente neste bloco. Enquanto a foto não
-           existe, o espaço carrega informação: para quem o curso é. -->
       <div class="libras__media">
+        {libras.photo && (
+          <figure class="ilustracao ilustracao--libras">
+            <Photo src={libras.photo.src} alt={libras.photo.alt} />
+            <figcaption>{libras.photo.caption}</figcaption>
+          </figure>
+        )}
         <div class="libras__para">
           <h3>Para quem é</h3>
           <ul class="checks">
@@ -181,6 +185,45 @@ const homeFaq = [
   </section>
 
   <OrganicDivider bg="var(--navy)" fill="var(--grey-25)" flip />
+
+  <section class="cafe section" aria-labelledby="cafe-titulo">
+    <div class="wrap cafe__grid">
+      <div class="cafe__texto">
+        <h2 id="cafe-titulo">{cafeComProsa.nome}</h2>
+        <p class="lede cafe__descricao">{cafeComProsa.descricao}</p>
+        <dl class="cafe__fatos">
+          <div>
+            <dt>Encontros</dt>
+            <dd>{cafeComProsa.frequencia}</dd>
+          </div>
+          <div>
+            <dt>Horário</dt>
+            <dd>{cafeComProsa.horario}</dd>
+          </div>
+          <div>
+            <dt>Valor</dt>
+            <dd>{cafeComProsa.valor}</dd>
+          </div>
+          <div>
+            <dt>Retorno previsto</dt>
+            <dd>{cafeComProsa.retornoPrevisto}</dd>
+          </div>
+        </dl>
+        <div class="cafe__acoes">
+          <a class="btn btn--primary" href={`/${cursos.slug}#${cafeComProsa.id}`}>
+            Conhecer o projeto
+          </a>
+          <a href={waLink(cafeComProsa.nome, mensagemCafe)} target="_blank" rel="noopener">
+            Saber mais pelo WhatsApp
+          </a>
+        </div>
+      </div>
+      <figure class="ilustracao">
+        <Photo src={cafeComProsa.photo.src} alt={cafeComProsa.photo.alt} />
+        <figcaption>{cafeComProsa.photo.caption}</figcaption>
+      </figure>
+    </div>
+  </section>
 
   <!-- ─────────────────────── Como começa ─────────────────────── -->
   <section class="passos section" aria-labelledby="passos-titulo">
@@ -403,6 +446,7 @@ const homeFaq = [
     gap: var(--sp-4);
     margin-top: var(--sp-6);
   }
+  .libras__media { display: grid; gap: var(--sp-5); }
   .libras__para {
     background: rgba(255, 255, 255, 0.06);
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -421,6 +465,40 @@ const homeFaq = [
   .libras__solid:hover { background: var(--teal-100); color: var(--navy-900); }
   .libras__ghost { color: #fff; border-color: rgba(255, 255, 255, 0.4); }
   .libras__ghost:hover { background: rgba(255, 255, 255, 0.1); color: #fff; border-color: #fff; }
+
+  .cafe { background: var(--grey-25); }
+  .cafe__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+  .cafe__descricao { margin-top: var(--sp-4); }
+  .cafe__acoes {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sp-4);
+    margin-top: var(--sp-5);
+  }
+  .cafe__fatos { margin: var(--sp-5) 0 0; }
+  .cafe__fatos > div {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+    gap: var(--sp-4);
+    padding-block: var(--sp-3);
+    border-bottom: 1px solid var(--line);
+  }
+  .cafe__fatos dt { font-weight: 600; color: var(--navy); }
+  .cafe__fatos dd { margin: 0; }
+
+  .ilustracao { margin: 0; }
+  .ilustracao figcaption {
+    margin-top: var(--sp-2);
+    color: var(--muted);
+    font-size: 0.8125rem;
+  }
+  .ilustracao--libras figcaption { color: #d3dee7; }
 
   /* ---------------- Passos ---------------- */
   .passos { background: var(--grey-25); }
@@ -463,6 +541,7 @@ const homeFaq = [
   @media (max-width: 62rem) {
     .hero__grid,
     .libras__grid,
+    .cafe__grid,
     .valores__grid { grid-template-columns: 1fr; }
     .hero__media { order: -1; max-width: 26rem; }
     .valores__media { grid-template-columns: repeat(auto-fit, minmax(min(13rem, 100%), 1fr)); }
